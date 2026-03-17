@@ -419,30 +419,24 @@
             border-radius: 20px;
         }
 
-        /* Fallback logo when image doesn't exist — styled badges */
         .platform-logo-badge {
-            width: 80px;
-            height: 80px;
-            border-radius: 20px;
+            width: 120px;
+            height: 60px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 1.8rem;
-            font-family: var(--font-display);
-            font-size: 1.1rem;
-            font-weight: 700;
-            letter-spacing: 0.04em;
-            color: var(--white);
+            padding: 12px 16px;
+            background: var(--white);
+            border: 1px solid rgba(222, 197, 165, 0.4);
+            box-shadow: 0 4px 16px rgba(27, 27, 58, 0.06);
         }
 
-        .badge-justeat {
-            background: linear-gradient(135deg, #ff8000 0%, #e65c00 100%);
-            box-shadow: 0 8px 24px rgba(230, 92, 0, 0.3);
-        }
-
-        .badge-glovo {
-            background: linear-gradient(135deg, #00a082 0%, #007a63 100%);
-            box-shadow: 0 8px 24px rgba(0, 122, 99, 0.3);
+        .platform-logo-badge img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
 
         .platform-name {
@@ -742,7 +736,9 @@
 
             <!-- JUST EAT -->
             <div class="order-card reveal reveal-delay-1">
-                <div class="platform-logo-badge badge-justeat">JE</div>
+                <div class="platform-logo-badge">
+                    <img src="assets/logos/just-eat.png" alt="Just Eat">
+                </div>
                 <h2 class="platform-name">Just Eat</h2>
                 <span class="platform-tag tag-justeat">Recogida en tienda</span>
                 <p class="platform-desc">
@@ -763,7 +759,9 @@
 
             <!-- GLOVO -->
             <div class="order-card reveal reveal-delay-2">
-                <div class="platform-logo-badge badge-glovo">G</div>
+                <div class="platform-logo-badge">
+                    <img src="assets/logos/glovo.png" alt="Glovo">
+                </div>
                 <h2 class="platform-name">Glovo</h2>
                 <span class="platform-tag tag-glovo">Entrega a domicilio</span>
                 <p class="platform-desc">
