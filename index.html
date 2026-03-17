@@ -641,6 +641,172 @@
         }
 
         /* ═══════════════════════════════════════════
+           LOCATION SECTION
+           ═══════════════════════════════════════════ */
+        .location {
+            background: var(--cream-pale);
+            position: relative;
+        }
+
+        .location::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--cream), transparent);
+        }
+
+        .location-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(2rem, 5vw, 4rem);
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: stretch;
+        }
+
+        .location-map {
+            position: relative;
+            width: 100%;
+            min-height: 400px;
+            overflow: hidden;
+            box-shadow: 0 4px 30px rgba(27, 27, 58, 0.08);
+        }
+
+        .location-map iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            filter: saturate(0.85) contrast(1.05);
+            transition: filter 0.5s ease;
+        }
+
+        .location-map:hover iframe {
+            filter: saturate(1) contrast(1);
+        }
+
+        .location-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: clamp(1rem, 3vw, 2rem) 0;
+        }
+
+        .location-info .section-label {
+            text-align: left;
+        }
+
+        .location-info .section-title {
+            text-align: left;
+            margin-bottom: 2rem;
+        }
+
+        .location-details {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .location-detail {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .location-detail-icon {
+            flex-shrink: 0;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--white);
+            border: 1px solid var(--cream);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+
+        .location-detail:hover .location-detail-icon {
+            background: var(--cream);
+            border-color: var(--gold);
+        }
+
+        .location-detail-icon svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--navy);
+            opacity: 0.7;
+        }
+
+        .location-detail-text h4 {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            font-weight: 500;
+            font-style: italic;
+            color: var(--navy);
+            margin-bottom: 0.25rem;
+        }
+
+        .location-detail-text p {
+            font-size: 0.88rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+        }
+
+        .location-detail-text a {
+            color: var(--gold);
+            transition: color 0.3s ease;
+        }
+
+        .location-detail-text a:hover {
+            color: var(--navy);
+        }
+
+        .location-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-body);
+            font-size: 0.78rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--navy);
+            background: var(--cream);
+            padding: 13px 28px;
+            margin-top: 2rem;
+            align-self: flex-start;
+            transition: background 0.4s ease, transform 0.3s ease;
+        }
+
+        .location-cta:hover {
+            background: var(--gold-light);
+            transform: translateY(-2px);
+        }
+
+        .location-cta svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--navy);
+        }
+
+        @media (max-width: 900px) {
+            .location-grid {
+                grid-template-columns: 1fr;
+            }
+            .location-map {
+                min-height: 300px;
+                order: 2;
+            }
+            .location-info {
+                order: 1;
+            }
+        }
+
+        /* ═══════════════════════════════════════════
            CTA BANNER
            ═══════════════════════════════════════════ */
         .cta-banner {
@@ -892,6 +1058,7 @@
             <li><a href="#inicio">Inicio</a></li>
             <li><a href="#tartas">Nuestras Tartas</a></li>
             <li><a href="#nosotros">Sobre Nosotros</a></li>
+            <li><a href="#ubicacion">Ubicación</a></li>
             <li><a href="#contacto">Contacto</a></li>
             <li><a href="#contacto" class="nav-cta">Haz tu pedido</a></li>
         </ul>
@@ -1012,6 +1179,58 @@
         </div>
     </section>
 
+    <!-- ═══════════════ LOCATION ═══════════════ -->
+    <section class="location section-padding" id="ubicacion">
+        <div class="location-grid">
+            <div class="location-map reveal">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4054.0502740798547!2d2.157798176059223!3d41.3792943713008!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a4a3c31dbaca97%3A0x20e51ce6d930964c!2sTartas%20Pastor!5e1!3m2!1ses!2ses!4v1773762873420!5m2!1ses!2ses"
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                    title="Ubicación de Tartas Pastor en Google Maps"
+                    allowfullscreen>
+                </iframe>
+            </div>
+            <div class="location-info">
+                <span class="section-label reveal">Encuéntranos</span>
+                <h2 class="section-title reveal reveal-delay-1">Dónde Estamos</h2>
+                <div class="location-details">
+                    <div class="location-detail reveal reveal-delay-2">
+                        <div class="location-detail-icon">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                        </div>
+                        <div class="location-detail-text">
+                            <h4>Dirección</h4>
+                            <p>Carrer del Comte Borrell, 72<br>Eixample, 08015 Barcelona</p>
+                        </div>
+                    </div>
+                    <div class="location-detail reveal reveal-delay-3">
+                        <div class="location-detail-icon">
+                            <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                        </div>
+                        <div class="location-detail-text">
+                            <h4>Horario de pedidos</h4>
+                            <p>Lunes a Sábado: 9:00 – 20:00<br>Domingo: 10:00 – 14:00</p>
+                        </div>
+                    </div>
+                    <div class="location-detail reveal reveal-delay-4">
+                        <div class="location-detail-icon">
+                            <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                        </div>
+                        <div class="location-detail-text">
+                            <h4>Contacto</h4>
+                            <p>+34 600 000 000<br><a href="mailto:info@tartaspastor.es">info@tartaspastor.es</a></p>
+                        </div>
+                    </div>
+                </div>
+                <a href="https://share.google/GXdoX6YCHdWy6mRFV" target="_blank" rel="noopener" class="location-cta reveal">
+                    <svg viewBox="0 0 24 24"><path d="M21.71 11.29l-9-9a.996.996 0 00-1.41 0l-9 9a.996.996 0 000 1.41l9 9c.39.39 1.02.39 1.41 0l9-9a.996.996 0 000-1.41zM14 14.5V12h-4v3H8v-4c0-.55.45-1 1-1h5V7.5l3.5 3.5-3.5 3.5z"/></svg>
+                    Cómo llegar
+                </a>
+            </div>
+        </div>
+    </section>
+
     <!-- ═══════════════ CTA BANNER ═══════════════ -->
     <section class="cta-banner section-padding" id="contacto">
         <div class="cta-banner-inner reveal">
@@ -1039,6 +1258,7 @@
                     <li><a href="#inicio">Inicio</a></li>
                     <li><a href="#tartas">Nuestras Tartas</a></li>
                     <li><a href="#nosotros">Sobre Nosotros</a></li>
+                    <li><a href="#ubicacion">Ubicación</a></li>
                     <li><a href="#contacto">Contacto</a></li>
                 </ul>
             </div>
