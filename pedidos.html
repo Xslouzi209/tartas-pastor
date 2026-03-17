@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haz tu Pedido — Tartas Pastor</title>
+    <meta name="description" content="Pide tu tarta de queso artesanal Tartas Pastor a través de Just Eat o Glovo. Entrega a domicilio y recogida en tienda en Barcelona.">
+    <link rel="icon" type="image/png" href="assets/brand/logo_redondo_2.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Questrial&display=swap" rel="stylesheet">
+    <style>
+        /* ═══════════════════════════════════════════
+           CSS VARIABLES & RESET
+           ═══════════════════════════════════════════ */
+        :root {
+            --navy: #1B1B3A;
+            --navy-deep: #111128;
+            --navy-light: #2a2a52;
+            --cream: #DEC5A5;
+            --cream-light: #F0E4D1;
+            --cream-pale: #FAF6F0;
+            --gold: #C9A96E;
+            --gold-light: #E8D5A8;
+            --white: #FEFCF9;
+            --text-dark: #1B1B3A;
+            --text-light: #F0E4D1;
+            --text-muted: #8a8a9e;
+            --font-display: 'Cormorant Garamond', Georgia, serif;
+            --font-body: 'Questrial', 'Gill Sans', sans-serif;
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--text-dark);
+            background: var(--white);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        img { max-width: 100%; display: block; }
+        a { text-decoration: none; color: inherit; }
+
+        /* Grain overlay */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.025;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+            background-size: 200px;
+        }
+
+        /* ═══════════════════════════════════════════
+           SCROLL REVEAL
+           ═══════════════════════════════════════════ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.9s var(--ease-out-expo), transform 0.9s var(--ease-out-expo);
+        }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+
+        /* ═══════════════════════════════════════════
+           NAVBAR
+           ═══════════════════════════════════════════ */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            padding: 0 clamp(1.5rem, 4vw, 4rem);
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(27, 27, 58, 0.97);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 2px 40px rgba(0,0,0,0.2);
+            transition: height 0.5s ease;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            z-index: 10;
+        }
+        .nav-brand img {
+            width: 44px; height: 44px;
+            border-radius: 50%;
+        }
+        .nav-brand-name {
+            font-family: var(--font-display);
+            font-size: 1.45rem;
+            font-weight: 500;
+            font-style: italic;
+            color: var(--cream);
+            letter-spacing: 0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2.2rem;
+            list-style: none;
+        }
+        .nav-links a {
+            font-family: var(--font-body);
+            font-size: 0.82rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--cream-light);
+            position: relative;
+            padding: 4px 0;
+            transition: color 0.3s ease;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px; left: 0;
+            width: 0; height: 1px;
+            background: var(--gold);
+            transition: width 0.4s var(--ease-out-expo);
+        }
+        .nav-links a:hover { color: var(--gold-light); }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-links a.active { color: var(--gold); }
+        .nav-links a.active::after { width: 100%; }
+
+        .nav-cta {
+            font-family: var(--font-body) !important;
+            font-size: 0.78rem !important;
+            letter-spacing: 0.16em !important;
+            text-transform: uppercase;
+            color: var(--navy) !important;
+            background: var(--cream);
+            padding: 11px 26px !important;
+            transition: background 0.3s ease, transform 0.3s ease !important;
+        }
+        .nav-cta::after { display: none !important; }
+        .nav-cta:hover {
+            background: var(--gold-light) !important;
+            transform: translateY(-1px);
+        }
+        .nav-cta.active {
+            background: var(--gold) !important;
+            color: var(--navy) !important;
+        }
+
+        .nav-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 10;
+            background: none;
+            border: none;
+            padding: 8px;
+        }
+        .nav-toggle span {
+            width: 26px; height: 2px;
+            background: var(--cream);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            display: block;
+        }
+        .nav-toggle.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .nav-toggle.active span:nth-child(2) { opacity: 0; }
+        .nav-toggle.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                inset: 0;
+                background: var(--navy-deep);
+                flex-direction: column;
+                justify-content: center;
+                gap: 2rem;
+                transform: translateX(100%);
+                transition: transform 0.5s var(--ease-out-expo);
+            }
+            .nav-links.open { transform: translateX(0); }
+            .nav-links a { font-size: 1.1rem; }
+            .nav-cta { padding: 14px 36px !important; }
+            .nav-toggle { display: flex; }
+        }
+
+        /* ═══════════════════════════════════════════
+           HERO — PAGE HEADER
+           ═══════════════════════════════════════════ */
+        .page-hero {
+            min-height: 52vh;
+            background: var(--navy-deep);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: calc(80px + 4rem) clamp(1.5rem, 5vw, 4rem) 5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 60% 60% at 20% 50%, rgba(201, 169, 110, 0.08) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 50% at 80% 50%, rgba(222, 197, 165, 0.06) 0%, transparent 70%);
+        }
+
+        /* Subtle diagonal lines decorative */
+        .page-hero::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: repeating-linear-gradient(
+                -45deg,
+                transparent,
+                transparent 80px,
+                rgba(201, 169, 110, 0.025) 80px,
+                rgba(201, 169, 110, 0.025) 81px
+            );
+            pointer-events: none;
+        }
+
+        .page-hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 700px;
+        }
+
+        .page-hero-label {
+            display: inline-block;
+            font-family: var(--font-body);
+            font-size: 0.72rem;
+            letter-spacing: 0.26em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 1.2rem;
+        }
+
+        .page-hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 7vw, 5.5rem);
+            font-weight: 400;
+            color: var(--cream-light);
+            line-height: 1.05;
+            margin-bottom: 1.2rem;
+        }
+
+        .page-hero h1 em {
+            font-style: italic;
+            color: var(--gold);
+        }
+
+        .page-hero p {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: var(--text-muted);
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        /* Ornament */
+        .hero-ornament {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+        .hero-ornament-line {
+            width: 50px; height: 1px;
+            background: linear-gradient(to right, transparent, var(--gold));
+        }
+        .hero-ornament-line:last-child {
+            background: linear-gradient(to left, transparent, var(--gold));
+        }
+        .hero-ornament-diamond {
+            width: 6px; height: 6px;
+            background: var(--gold);
+            transform: rotate(45deg);
+        }
+
+        /* ═══════════════════════════════════════════
+           SECTION COMMON
+           ═══════════════════════════════════════════ */
+        .section-padding { padding: clamp(4rem, 8vw, 7rem) clamp(1.5rem, 5vw, 4rem); }
+
+        /* ═══════════════════════════════════════════
+           ORDER OPTIONS
+           ═══════════════════════════════════════════ */
+        .order-section {
+            background: var(--cream-pale);
+            position: relative;
+        }
+
+        .order-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--cream), transparent);
+        }
+
+        .order-intro {
+            text-align: center;
+            max-width: 580px;
+            margin: 0 auto 4rem;
+        }
+
+        .section-label {
+            display: inline-block;
+            font-family: var(--font-body);
+            font-size: 0.72rem;
+            letter-spacing: 0.26em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 0.8rem;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.2rem, 4vw, 3.2rem);
+            font-weight: 400;
+            color: var(--navy);
+            line-height: 1.1;
+            margin-bottom: 1rem;
+        }
+
+        .order-intro p {
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: var(--text-muted);
+        }
+
+        /* The two platform cards */
+        .order-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(1.5rem, 3vw, 2.5rem);
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        .order-card {
+            background: var(--white);
+            border: 1px solid rgba(222, 197, 165, 0.4);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: clamp(2.5rem, 5vw, 3.5rem) clamp(1.5rem, 4vw, 3rem);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.4s var(--ease-out-expo), box-shadow 0.4s ease, border-color 0.4s ease;
+        }
+
+        .order-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: var(--gold);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s var(--ease-out-expo);
+        }
+
+        .order-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 60px rgba(27, 27, 58, 0.1);
+            border-color: rgba(201, 169, 110, 0.5);
+        }
+
+        .order-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        /* Platform logo / icon area */
+        .platform-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.8rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .platform-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 20px;
+        }
+
+        /* Fallback logo when image doesn't exist — styled badges */
+        .platform-logo-badge {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.8rem;
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            color: var(--white);
+        }
+
+        .badge-justeat {
+            background: linear-gradient(135deg, #ff8000 0%, #e65c00 100%);
+            box-shadow: 0 8px 24px rgba(230, 92, 0, 0.3);
+        }
+
+        .badge-glovo {
+            background: linear-gradient(135deg, #00a082 0%, #007a63 100%);
+            box-shadow: 0 8px 24px rgba(0, 122, 99, 0.3);
+        }
+
+        .platform-name {
+            font-family: var(--font-display);
+            font-size: 1.9rem;
+            font-weight: 500;
+            font-style: italic;
+            color: var(--navy);
+            margin-bottom: 0.5rem;
+        }
+
+        .platform-tag {
+            display: inline-block;
+            font-family: var(--font-body);
+            font-size: 0.7rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--white);
+            padding: 4px 14px;
+            margin-bottom: 1.5rem;
+        }
+
+        .tag-justeat { background: #ff8000; }
+        .tag-glovo { background: #00a082; }
+
+        .platform-desc {
+            font-size: 0.88rem;
+            line-height: 1.75;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            max-width: 280px;
+        }
+
+        /* Delivery info pills */
+        .platform-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 2.2rem;
+        }
+
+        .feature-pill {
+            font-family: var(--font-body);
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-dark);
+            background: var(--cream-pale);
+            border: 1px solid var(--cream);
+            padding: 5px 14px;
+        }
+
+        /* CTA button */
+        .order-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-body);
+            font-size: 0.78rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            padding: 16px 36px;
+            width: 100%;
+            justify-content: center;
+            transition: transform 0.3s var(--ease-out-expo), box-shadow 0.3s ease;
+        }
+
+        .order-btn svg {
+            width: 16px; height: 16px;
+            flex-shrink: 0;
+            transition: transform 0.3s ease;
+        }
+
+        .order-btn:hover svg { transform: translateX(3px); }
+
+        .btn-justeat {
+            background: #ff8000;
+            color: var(--white);
+        }
+        .btn-justeat:hover {
+            box-shadow: 0 8px 24px rgba(255, 128, 0, 0.35);
+            transform: translateY(-2px);
+        }
+
+        .btn-glovo {
+            background: #00a082;
+            color: var(--white);
+        }
+        .btn-glovo:hover {
+            box-shadow: 0 8px 24px rgba(0, 160, 130, 0.35);
+            transform: translateY(-2px);
+        }
+
+        /* ═══════════════════════════════════════════
+           INFO STRIP
+           ═══════════════════════════════════════════ */
+        .info-strip {
+            background: var(--navy);
+            padding: clamp(3rem, 6vw, 4.5rem) clamp(1.5rem, 5vw, 4rem);
+        }
+
+        .info-strip-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .info-strip-text {
+            flex: 1;
+            min-width: 240px;
+        }
+
+        .info-strip-text h3 {
+            font-family: var(--font-display);
+            font-size: 1.6rem;
+            font-weight: 400;
+            font-style: italic;
+            color: var(--cream-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .info-strip-text p {
+            font-size: 0.85rem;
+            line-height: 1.7;
+            color: var(--text-muted);
+        }
+
+        .info-divider {
+            width: 1px;
+            height: 60px;
+            background: rgba(222, 197, 165, 0.2);
+        }
+
+        @media (max-width: 600px) { .info-divider { display: none; } }
+
+        /* ═══════════════════════════════════════════
+           FOOTER
+           ═══════════════════════════════════════════ */
+        .footer {
+            background: var(--navy-deep);
+            padding: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem) 2rem;
+        }
+
+        .footer-top {
+            display: flex;
+            gap: 3rem;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+            padding-bottom: 3rem;
+            border-bottom: 1px solid rgba(222, 197, 165, 0.1);
+        }
+
+        .footer-brand {
+            flex: 1.5;
+            min-width: 200px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .footer-brand img { border-radius: 50%; }
+
+        .footer-brand-name {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            font-style: italic;
+            color: var(--cream);
+        }
+
+        .footer-brand-tagline {
+            font-size: 0.83rem;
+            line-height: 1.7;
+            color: var(--text-muted);
+            max-width: 240px;
+        }
+
+        .footer-col {
+            flex: 1;
+            min-width: 140px;
+        }
+
+        .footer-col h4 {
+            font-family: var(--font-body);
+            font-size: 0.72rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 1.2rem;
+        }
+
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 0.6rem; }
+        .footer-col ul li a,
+        .footer-col ul li p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            transition: color 0.3s ease;
+        }
+        .footer-col ul li a:hover { color: var(--cream-light); }
+
+        .footer-socials { display: flex; gap: 12px; }
+
+        .footer-social-link {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            background: rgba(222, 197, 165, 0.07);
+            border: 1px solid rgba(222, 197, 165, 0.12);
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+        .footer-social-link:hover {
+            background: rgba(201, 169, 110, 0.15);
+            border-color: var(--gold);
+        }
+        .footer-social-link svg {
+            width: 15px; height: 15px;
+            fill: var(--cream-light);
+            opacity: 0.7;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: center;
+        }
+        .footer-copyright {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            letter-spacing: 0.06em;
+        }
+
+        /* ═══════════════════════════════════════════
+           RESPONSIVE
+           ═══════════════════════════════════════════ */
+        @media (max-width: 700px) {
+            .order-cards {
+                grid-template-columns: 1fr;
+                max-width: 440px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .footer-top { flex-direction: column; }
+            .footer-bottom { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ═══════════════ NAVBAR ═══════════════ -->
+    <nav class="navbar" id="navbar">
+        <a href="index.html" class="nav-brand">
+            <img src="assets/brand/logo_redondo_2.png" alt="Tartas Pastor logo" width="44" height="44">
+            <span class="nav-brand-name">Tartas Pastor</span>
+        </a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html#inicio">Inicio</a></li>
+            <li><a href="index.html#tartas">Nuestras Tartas</a></li>
+            <li><a href="index.html#nosotros">Sobre Nosotros</a></li>
+            <li><a href="index.html#ubicacion">Ubicación</a></li>
+            <li><a href="index.html#contacto">Contacto</a></li>
+            <li><a href="pedidos.html" class="nav-cta active">Haz tu pedido</a></li>
+        </ul>
+        <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
+    <!-- ═══════════════ PAGE HERO ═══════════════ -->
+    <header class="page-hero">
+        <div class="page-hero-content">
+            <div class="hero-ornament">
+                <span class="hero-ornament-line"></span>
+                <span class="hero-ornament-diamond"></span>
+                <span class="hero-ornament-line"></span>
+            </div>
+            <span class="page-hero-label">Repostería artesanal · Barcelona</span>
+            <h1>Haz tu<br><em>pedido</em></h1>
+            <p>Elige tu plataforma favorita y recibe tu tarta de queso donde quieras, o recógela directamente en nuestra tienda.</p>
+        </div>
+    </header>
+
+    <!-- ═══════════════ ORDER OPTIONS ═══════════════ -->
+    <section class="order-section section-padding">
+        <div class="order-intro reveal">
+            <span class="section-label">Elige cómo quieres pedirla</span>
+            <h2 class="section-title">Disponibles en<br>dos plataformas</h2>
+            <p>Trabajamos con Just Eat y Glovo para que puedas disfrutar de nuestras tartas de queso sin salir de casa.</p>
+        </div>
+
+        <div class="order-cards">
+
+            <!-- JUST EAT -->
+            <div class="order-card reveal reveal-delay-1">
+                <div class="platform-logo-badge badge-justeat">JE</div>
+                <h2 class="platform-name">Just Eat</h2>
+                <span class="platform-tag tag-justeat">Recogida en tienda</span>
+                <p class="platform-desc">
+                    Haz tu pedido con antelación a través de Just Eat y recógelo cuando quieras en nuestra tienda del Eixample.
+                </p>
+                <div class="platform-features">
+                    <span class="feature-pill">Recogida en tienda</span>
+                    <span class="feature-pill">Pago online</span>
+                    <span class="feature-pill">Sin esperas</span>
+                </div>
+                <a href="https://www.just-eat.es/restaurants-tartas-pastor-barcelona-08015/menu?serviceType=collection&utm_source=google&utm_medium=organic&utm_campaign=foodorder"
+                   target="_blank" rel="noopener"
+                   class="order-btn btn-justeat">
+                    Pedir en Just Eat
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+            </div>
+
+            <!-- GLOVO -->
+            <div class="order-card reveal reveal-delay-2">
+                <div class="platform-logo-badge badge-glovo">G</div>
+                <h2 class="platform-name">Glovo</h2>
+                <span class="platform-tag tag-glovo">Entrega a domicilio</span>
+                <p class="platform-desc">
+                    Pide desde casa y recibe tu tarta de queso artesanal a domicilio en Barcelona con entrega rápida.
+                </p>
+                <div class="platform-features">
+                    <span class="feature-pill">Entrega a domicilio</span>
+                    <span class="feature-pill">Seguimiento en vivo</span>
+                    <span class="feature-pill">Rápido</span>
+                </div>
+                <a href="https://glovoapp.com/es/es/barcelona/stores/tartas-pastor-bcn?utm_source=google&utm_medium=organic&utm_campaign=google_reserve_place_order_action"
+                   target="_blank" rel="noopener"
+                   class="order-btn btn-glovo">
+                    Pedir en Glovo
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ═══════════════ INFO STRIP ═══════════════ -->
+    <div class="info-strip">
+        <div class="info-strip-inner">
+            <div class="info-strip-text reveal">
+                <h3>Horario de pedidos</h3>
+                <p>Lunes a Sábado: 9:00 – 20:00<br>Domingo: 10:00 – 14:00</p>
+            </div>
+            <div class="info-divider"></div>
+            <div class="info-strip-text reveal reveal-delay-1">
+                <h3>Dónde estamos</h3>
+                <p>Carrer del Comte Borrell, 72<br>Eixample, 08015 Barcelona</p>
+            </div>
+            <div class="info-divider"></div>
+            <div class="info-strip-text reveal reveal-delay-2">
+                <h3>¿Dudas?</h3>
+                <p>+34 600 000 000<br>info@tartaspastor.es</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════ FOOTER ═══════════════ -->
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="footer-brand">
+                <img src="assets/brand/logo_redondo_1.png" alt="Tartas Pastor" width="60" height="60">
+                <span class="footer-brand-name">Tartas Pastor</span>
+                <p class="footer-brand-tagline">Tartas de queso artesanales elaboradas con pasión y los mejores ingredientes.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Navegación</h4>
+                <ul>
+                    <li><a href="index.html#inicio">Inicio</a></li>
+                    <li><a href="index.html#tartas">Nuestras Tartas</a></li>
+                    <li><a href="index.html#nosotros">Sobre Nosotros</a></li>
+                    <li><a href="index.html#ubicacion">Ubicación</a></li>
+                    <li><a href="index.html#contacto">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contacto</h4>
+                <ul>
+                    <li><p>info@tartaspastor.es</p></li>
+                    <li><p>+34 600 000 000</p></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Síguenos</h4>
+                <div class="footer-socials">
+                    <a href="https://www.instagram.com/tartas.pastor/?hl=es" target="_blank" rel="noopener" class="footer-social-link" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                    </a>
+                    <a href="#" class="footer-social-link" aria-label="Facebook">
+                        <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                    </a>
+                    <a href="#" class="footer-social-link" aria-label="TikTok">
+                        <svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p class="footer-copyright">© 2026 Tartas Pastor. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- ═══════════════ JAVASCRIPT ═══════════════ -->
+    <script>
+        // Mobile menu toggle
+        const navToggle = document.getElementById('navToggle');
+        const navLinks = document.getElementById('navLinks');
+        navToggle.addEventListener('click', () => {
+            navToggle.classList.toggle('active');
+            navLinks.classList.toggle('open');
+        });
+
+        // Scroll reveal
+        const reveals = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.12 });
+        reveals.forEach(el => revealObserver.observe(el));
+    </script>
+
+</body>
+</html>
