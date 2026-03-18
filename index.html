@@ -236,7 +236,7 @@
         .hero-bg {
             position: absolute;
             inset: 0;
-            background-image: url('assets/images/hero-slice.jpg');
+            background-image: url('assets/images/portada.png');
             background-size: cover;
             background-position: center 30%;
             transform: scale(1.08);
@@ -459,12 +459,27 @@
             background: linear-gradient(to right, transparent, var(--cream), transparent);
         }
 
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: clamp(1.5rem, 3vw, 2.5rem);
+        .products-carousel-wrapper {
+            position: relative;
             max-width: 1200px;
             margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .products-carousel {
+            display: flex;
+            gap: clamp(1.2rem, 2.5vw, 2rem);
+            animation: carouselScroll 25s linear infinite;
+            width: max-content;
+        }
+
+        .products-carousel:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes carouselScroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
         }
 
         .product-card {
@@ -474,6 +489,9 @@
             cursor: pointer;
             box-shadow: 0 4px 30px rgba(27, 27, 58, 0.06);
             transition: transform 0.6s var(--ease-out-expo), box-shadow 0.6s var(--ease-out-expo);
+            min-width: 300px;
+            max-width: 340px;
+            flex-shrink: 0;
         }
 
         .product-card:hover {
@@ -497,6 +515,17 @@
 
         .product-card:hover .product-card-img img {
             transform: scale(1.06);
+        }
+
+        .carousel-hint {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-family: var(--font-body);
+            font-size: 0.72rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gold);
+            opacity: 0.7;
         }
 
         .product-card-img::after {
@@ -1006,9 +1035,9 @@
             .nav-links.open { right: 0; }
             .nav-toggle { display: flex; }
 
-            .products-grid {
-                grid-template-columns: 1fr;
-                max-width: 550px;
+            .product-card {
+                min-width: 260px;
+                max-width: 280px;
             }
 
             .about-grid {
@@ -1056,10 +1085,6 @@
         </a>
         <ul class="nav-links" id="navLinks">
             <li><a href="#inicio">Inicio</a></li>
-            <li><a href="#tartas">Nuestras Tartas</a></li>
-            <li><a href="#nosotros">Sobre Nosotros</a></li>
-            <li><a href="#ubicacion">Ubicación</a></li>
-            <li><a href="#contacto">Contacto</a></li>
             <li><a href="pedidos.html" class="nav-cta">Haz tu pedido</a></li>
         </ul>
         <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">
@@ -1079,7 +1104,7 @@
             </div>
             <h1>El arte de la<br><em>tarta de queso</em></h1>
             <p class="hero-subtitle">Elaboradas artesanalmente con los mejores ingredientes</p>
-            <a href="#tartas" class="hero-cta">Descubre nuestros sabores</a>
+            <a href="pedidos.html" class="hero-cta">Haz tu pedido</a>
         </div>
         <div class="hero-scroll-indicator">
             <span>Scroll</span>
@@ -1099,50 +1124,99 @@
             </div>
         </div>
 
-        <div class="products-grid">
-            <div class="product-card reveal reveal-delay-1">
-                <div class="product-card-img">
-                    <img src="assets/images/whole-cheesecake.jpg" alt="Tarta de Queso Vasca" loading="lazy">
+        <div class="products-carousel-wrapper">
+            <div class="products-carousel" id="productsCarousel">
+                <!-- Original cards -->
+                <div class="product-card">
+                    <div class="product-card-img">
+                        <img src="assets/images/tarta-oreo.png" alt="Tarta de Oreo" loading="lazy">
+                    </div>
+                    <div class="product-card-body">
+                        <h3 class="product-card-name">Tarta de Oreo</h3>
+                        <p class="product-card-desc">Irresistible combinación de crema de queso con galleta Oreo. Textura cremosa y crujiente a partes iguales.</p>
+                        <span class="product-card-accent"></span>
+                    </div>
                 </div>
-                <div class="product-card-body">
-                    <h3 class="product-card-name">Tarta de Queso Vasca</h3>
-                    <p class="product-card-desc">Nuestra estrella. Cremosa por dentro, caramelizada por fuera. Receta tradicional vasca.</p>
-                    <span class="product-card-accent"></span>
-                </div>
-            </div>
 
-            <div class="product-card reveal reveal-delay-2">
-                <div class="product-card-img">
-                    <img src="assets/images/berries-cheesecake.jpg" alt="Cheesecake de Frutos Rojos" loading="lazy">
+                <div class="product-card">
+                    <div class="product-card-img">
+                        <img src="assets/images/surtido-mini-tartas.png" alt="Surtido de Sabores" loading="lazy">
+                    </div>
+                    <div class="product-card-body">
+                        <h3 class="product-card-name">Surtido de Sabores</h3>
+                        <p class="product-card-desc">Descubre toda nuestra variedad: vasca, chocolate, lotus, oreo y limón. Perfectas para cualquier ocasión.</p>
+                        <span class="product-card-accent"></span>
+                    </div>
                 </div>
-                <div class="product-card-body">
-                    <h3 class="product-card-name">Cheesecake de Frutos Rojos</h3>
-                    <p class="product-card-desc">Coronada con frutos rojos frescos de temporada. Un equilibrio perfecto entre dulce y ácido.</p>
-                    <span class="product-card-accent"></span>
-                </div>
-            </div>
 
-            <div class="product-card reveal reveal-delay-3">
-                <div class="product-card-img">
-                    <img src="assets/images/ChatGPT Image 17 mar 2026, 15_13_34.png" alt="Tarta de Pistacho" loading="lazy">
+                <div class="product-card">
+                    <div class="product-card-img">
+                        <img src="assets/images/tarta-pistacho.png" alt="Tarta de Pistacho" loading="lazy">
+                    </div>
+                    <div class="product-card-body">
+                        <h3 class="product-card-name">Tarta de Pistacho</h3>
+                        <p class="product-card-desc">Crema de pistacho artesanal sobre nuestra base de queso. Un capricho irresistible.</p>
+                        <span class="product-card-accent"></span>
+                    </div>
                 </div>
-                <div class="product-card-body">
-                    <h3 class="product-card-name">Tarta de Pistacho</h3>
-                    <p class="product-card-desc">Crema de pistacho artesanal sobre nuestra base de queso. Un capricho irresistible.</p>
-                    <span class="product-card-accent"></span>
-                </div>
-            </div>
 
-            <div class="product-card reveal reveal-delay-4">
-                <div class="product-card-img">
-                    <img src="assets/images/ChatGPT Image 17 mar 2026, 15_11_56.png" alt="Mini Tartas Individuales" loading="lazy">
+                <div class="product-card">
+                    <div class="product-card-img">
+                        <img src="assets/images/mini-tartas.png" alt="Mini Tartas Individuales" loading="lazy">
+                    </div>
+                    <div class="product-card-body">
+                        <h3 class="product-card-name">Mini Tartas Individuales</h3>
+                        <p class="product-card-desc">Perfectas para degustar todos los sabores: Oreo, chocolate, lotus y limón.</p>
+                        <span class="product-card-accent"></span>
+                    </div>
                 </div>
-                <div class="product-card-body">
-                    <h3 class="product-card-name">Mini Tartas Individuales</h3>
-                    <p class="product-card-desc">Perfectas para degustar todos los sabores: Oreo, chocolate, lotus y limón.</p>
-                    <span class="product-card-accent"></span>
+
+                <!-- Duplicated cards for infinite loop -->
+                <div class="product-card">
+                    <div class="product-card-img">
+                        <img src="assets/images/tarta-oreo.png" alt="Tarta de Oreo" loading="lazy">
+                    </div>
+                    <div class="product-card-body">
+                        <h3 class="product-card-name">Tarta de Oreo</h3>
+                        <p class="product-card-desc">Irresistible combinación de crema de queso con galleta Oreo. Textura cremosa y crujiente a partes iguales.</p>
+                        <span class="product-card-accent"></span>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-card-img">
+                        <img src="assets/images/surtido-mini-tartas.png" alt="Surtido de Sabores" loading="lazy">
+                    </div>
+                    <div class="product-card-body">
+                        <h3 class="product-card-name">Surtido de Sabores</h3>
+                        <p class="product-card-desc">Descubre toda nuestra variedad: vasca, chocolate, lotus, oreo y limón. Perfectas para cualquier ocasión.</p>
+                        <span class="product-card-accent"></span>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-card-img">
+                        <img src="assets/images/tarta-pistacho.png" alt="Tarta de Pistacho" loading="lazy">
+                    </div>
+                    <div class="product-card-body">
+                        <h3 class="product-card-name">Tarta de Pistacho</h3>
+                        <p class="product-card-desc">Crema de pistacho artesanal sobre nuestra base de queso. Un capricho irresistible.</p>
+                        <span class="product-card-accent"></span>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-card-img">
+                        <img src="assets/images/mini-tartas.png" alt="Mini Tartas Individuales" loading="lazy">
+                    </div>
+                    <div class="product-card-body">
+                        <h3 class="product-card-name">Mini Tartas Individuales</h3>
+                        <p class="product-card-desc">Perfectas para degustar todos los sabores: Oreo, chocolate, lotus y limón.</p>
+                        <span class="product-card-accent"></span>
+                    </div>
                 </div>
             </div>
+            <p class="carousel-hint">Pasa el cursor para pausar</p>
         </div>
     </section>
 
@@ -1150,16 +1224,16 @@
     <section class="about section-padding" id="nosotros">
         <div class="about-grid">
             <div class="about-image-wrapper reveal">
-                <img src="assets/images/ChatGPT Image 17 mar 2026, 15_12_54.png" alt="Tartas Pastor en nuestra cafetería" loading="lazy">
+                <img src="assets/images/sobre-nosotros.png" alt="Tartas Pastor en nuestra cafetería" loading="lazy">
             </div>
             <div class="about-content">
                 <span class="section-label reveal">Nuestra historia</span>
                 <h2 class="section-title reveal reveal-delay-1">Sobre Nosotros</h2>
                 <p class="about-text reveal reveal-delay-2">
-                    En Tartas Pastor, cada tarta es una obra de arte. Utilizamos ingredientes de primera calidad y recetas perfeccionadas con pasión y dedicación para crear tartas de queso que despiertan los sentidos.
+                    En Tartas Pastor no solo elaboramos tartas de queso artesanales, sino que también somos distribuidores. Desde nuestra fábrica, suministramos al por mayor a empresas, hostelería y comercios que buscan ofrecer a sus clientes un producto de calidad excepcional.
                 </p>
                 <p class="about-text reveal reveal-delay-3">
-                    Nuestra obsesión por la textura perfecta, el punto de horneado ideal y los sabores auténticos nos ha convertido en un referente para los amantes de la tarta de queso. Cada creación refleja nuestro compromiso con la excelencia artesanal.
+                    Nuestra clave es sencilla: 0 conservantes, 0 gluten, ingredientes 100% naturales y elaboración completamente artesanal. Cada tarta se prepara con mimo y dedicación, respetando los procesos tradicionales para conseguir la textura y el sabor que nos distinguen.
                 </p>
                 <div class="about-values reveal reveal-delay-4">
                     <div class="about-value">
@@ -1167,12 +1241,16 @@
                         <span class="about-value-label">Artesanal</span>
                     </div>
                     <div class="about-value">
-                        <span class="about-value-number">+10</span>
-                        <span class="about-value-label">Sabores</span>
+                        <span class="about-value-number">100%</span>
+                        <span class="about-value-label">Natural</span>
                     </div>
                     <div class="about-value">
                         <span class="about-value-number">0</span>
                         <span class="about-value-label">Conservantes</span>
+                    </div>
+                    <div class="about-value">
+                        <span class="about-value-number">0</span>
+                        <span class="about-value-label">Gluten</span>
                     </div>
                 </div>
             </div>
