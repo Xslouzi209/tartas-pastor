@@ -9,6 +9,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Questrial&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script>
+        (function(){emailjs.init("j0zd1xnPP3ee23AQ5");})();
+    </script>
     <style>
         /* ═══════════════════════════════════════════
            CSS VARIABLES & RESET
@@ -198,14 +202,19 @@
                 background: var(--navy-deep);
                 flex-direction: column;
                 justify-content: center;
+                align-items: center;
                 gap: 2rem;
+                z-index: 9999;
                 transform: translateX(100%);
                 transition: transform 0.5s var(--ease-out-expo);
+                padding: 0;
+                margin: 0;
+                list-style: none;
             }
             .nav-links.open { transform: translateX(0); }
-            .nav-links a { font-size: 1.1rem; }
+            .nav-links a { font-size: 1.3rem; }
             .nav-cta { padding: 14px 36px !important; }
-            .nav-toggle { display: flex; }
+            .nav-toggle { display: flex; z-index: 10000; position: relative; }
         }
 
         /* ═══════════════════════════════════════════
@@ -1912,18 +1921,11 @@
                         <label for="dist-mensaje">Comentarios</label>
                         <textarea id="dist-mensaje" name="mensaje" rows="5" placeholder="Cuéntanos qué producto te interesa, volúmenes, plazos…" required></textarea>
                     </div>
-                    <div class="form-field">
-                        <label class="file-label">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
-                            <span id="file-label-text">Adjuntar archivo (opcional)</span>
-                            <input type="file" id="dist-archivo" accept="image/*,.pdf" style="display:none">
-                        </label>
-                    </div>
                     <button type="submit" class="form-submit">
                         Enviar consulta
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
                     </button>
-                    <p class="form-note">Al enviar se abrirá tu cliente de correo con todos los datos listos para enviar a <strong>tartaspastor0823@gmail.com</strong></p>
+                    <p class="form-note">Tu mensaje se enviará directamente a <strong>Tartas Pastor</strong>. Te responderemos lo antes posible.</p>
                 </form>
             </div>
 
@@ -1972,7 +1974,7 @@
             <div class="footer-col">
                 <h4>Contacto</h4>
                 <ul>
-                    <li><p>tartaspastor0823@gmail.com</p></li>
+                    <li><p>fabrica@tartaspastor.com</p></li>
                     <li><p>+34 604 968 064</p></li>
                 </ul>
             </div>
@@ -2032,23 +2034,7 @@
         }, { threshold: 0.12 });
         reveals.forEach(el => revealObserver.observe(el));
 
-        // File input label update
-        const fileInput = document.getElementById('dist-archivo');
-        const fileLabelEl = document.querySelector('.file-label');
-        const fileLabelText = document.getElementById('file-label-text');
-        if (fileInput) {
-            fileInput.addEventListener('change', () => {
-                if (fileInput.files.length > 0) {
-                    fileLabelText.textContent = fileInput.files[0].name;
-                    fileLabelEl.classList.add('has-file');
-                } else {
-                    fileLabelText.textContent = 'Adjuntar archivo (opcional)';
-                    fileLabelEl.classList.remove('has-file');
-                }
-            });
-        }
-
-        // Contact form → mailto
+        // Contact form → EmailJS
         const distForm = document.getElementById('distForm');
         if (distForm) {
             distForm.addEventListener('submit', function(e) {
@@ -2062,15 +2048,29 @@
                     return;
                 }
 
-                const subject = encodeURIComponent('Consulta de distribuidor — ' + nombre);
-                const body = encodeURIComponent(
-                    'Nombre de contacto: ' + nombre + '\n' +
-                    'Email de contacto: ' + email + '\n\n' +
-                    'Comentarios:\n' + mensaje + '\n\n' +
-                    '---\nMensaje enviado desde tartaspastor.com'
-                );
+                const submitBtn = distForm.querySelector('.form-submit');
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = 'Enviando…';
 
-                window.location.href = 'mailto:tartaspastor0823@gmail.com?subject=' + subject + '&body=' + body;
+                emailjs.send(
+                    'service_3elw4mf',
+                    'template_dgur8o3',
+                    {
+                        from_name: nombre,
+                        from_email: email,
+                        message: mensaje
+                    }
+                ).then(function() {
+                    distForm.reset();
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Enviar consulta <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>';
+                    alert('¡Mensaje enviado correctamente! Te responderemos lo antes posible.');
+                }, function(error) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Enviar consulta <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>';
+                    alert('Hubo un error al enviar el mensaje. Por favor, inténtalo de nuevo o escríbenos directamente a fabrica@tartaspastor.com');
+                    console.error('EmailJS error:', error);
+                });
             });
         }
     </script>
