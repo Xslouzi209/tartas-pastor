@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dónde estamos — Tartas Pastor</title>
+    <meta name="description" content="Visítanos en nuestra tienda de Barcelona o contáctanos como distribuidor. Tartas Pastor.">
+    <link rel="icon" type="image/png" href="assets/brand/logo_redondo_2.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Questrial&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #1B1B3A;
+            --navy-deep: #111128;
+            --navy-light: #2a2a52;
+            --cream: #DEC5A5;
+            --cream-light: #F0E4D1;
+            --cream-pale: #FAF6F0;
+            --gold: #C9A96E;
+            --gold-light: #E8D5A8;
+            --white: #FEFCF9;
+            --text-dark: #1B1B3A;
+            --text-muted: #8a8a9e;
+            --font-display: 'Cormorant Garamond', Georgia, serif;
+            --font-body: 'Questrial', 'Gill Sans', sans-serif;
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; overflow-x: hidden; font-size: 16px; }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--navy-deep);
+            color: var(--cream-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        img { max-width: 100%; display: block; }
+        a { text-decoration: none; color: inherit; }
+
+        /* Grain overlay */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+            background-size: 200px;
+        }
+
+        /* Background radial glow */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 70% 60% at 25% 50%, rgba(201, 169, 110, 0.06) 0%, transparent 65%),
+                radial-gradient(ellipse 60% 60% at 75% 50%, rgba(222, 197, 165, 0.04) 0%, transparent 65%);
+            pointer-events: none;
+        }
+
+        /* ── Navbar ── */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            padding: 0 clamp(1.5rem, 4vw, 4rem);
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(17, 17, 40, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .nav-brand img { width: 40px; height: 40px; border-radius: 50%; }
+        .nav-brand-name {
+            font-family: var(--font-display);
+            font-size: 1.35rem;
+            font-weight: 500;
+            font-style: italic;
+            color: var(--cream);
+        }
+
+        .nav-back {
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s ease;
+        }
+        .nav-back svg {
+            width: 14px; height: 14px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .nav-back:hover { color: var(--cream-light); }
+
+        /* ── Main layout ── */
+        .page {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: calc(72px + 3rem) clamp(1.5rem, 5vw, 4rem) 4rem;
+            min-height: 100vh;
+        }
+
+        .ornament {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1.6rem;
+        }
+        .ornament-line {
+            width: 44px; height: 1px;
+            background: linear-gradient(to right, transparent, var(--gold));
+        }
+        .ornament-line:last-child {
+            background: linear-gradient(to left, transparent, var(--gold));
+        }
+        .ornament-diamond {
+            width: 6px; height: 6px;
+            background: var(--gold);
+            transform: rotate(45deg);
+        }
+
+        .eyebrow {
+            font-family: var(--font-body);
+            font-size: 0.7rem;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .headline {
+            font-family: var(--font-display);
+            font-size: clamp(2.6rem, 6vw, 5rem);
+            font-weight: 400;
+            color: var(--cream-light);
+            line-height: 1.05;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        .headline em {
+            font-style: italic;
+            color: var(--gold);
+        }
+
+        .subline {
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: var(--text-muted);
+            text-align: center;
+            max-width: 420px;
+            margin-bottom: 4rem;
+        }
+
+        /* ── Cards ── */
+        .cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(1.2rem, 3vw, 2rem);
+            width: 100%;
+            max-width: 820px;
+        }
+
+        .card {
+            position: relative;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(222, 197, 165, 0.12);
+            padding: clamp(2.4rem, 5vw, 3.5rem) clamp(2rem, 4vw, 3rem);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.5s var(--ease-out-expo), border-color 0.4s ease, background 0.4s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Top accent bar */
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: var(--card-accent, var(--gold));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.55s var(--ease-out-expo);
+        }
+
+        /* Hover glow */
+        .card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 80% 80% at 50% 100%, var(--card-glow, rgba(201,169,110,0.07)) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(222, 197, 165, 0.28);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .card:hover::before { transform: scaleX(1); }
+        .card:hover::after { opacity: 1; }
+
+        .card-tienda {
+            --card-accent: #C9A96E;
+            --card-glow: rgba(201,169,110,0.08);
+        }
+        .card-fabrica {
+            --card-accent: #a8b8d0;
+            --card-glow: rgba(168,184,208,0.06);
+        }
+
+        .card-icon {
+            width: 52px; height: 52px;
+            border-radius: 50%;
+            background: rgba(201, 169, 110, 0.08);
+            border: 1px solid rgba(201, 169, 110, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.8rem;
+            transition: background 0.4s ease, border-color 0.4s ease;
+        }
+        .card-fabrica .card-icon {
+            background: rgba(168, 184, 208, 0.06);
+            border-color: rgba(168, 184, 208, 0.15);
+        }
+        .card:hover .card-icon {
+            background: rgba(201, 169, 110, 0.14);
+            border-color: rgba(201, 169, 110, 0.35);
+        }
+        .card-fabrica:hover .card-icon {
+            background: rgba(168, 184, 208, 0.1);
+            border-color: rgba(168, 184, 208, 0.3);
+        }
+        .card-icon svg {
+            width: 24px; height: 24px;
+            stroke: var(--gold);
+            fill: none;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .card-fabrica .card-icon svg { stroke: #a8b8d0; }
+
+        .card-label {
+            font-family: var(--font-body);
+            font-size: 0.68rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 0.6rem;
+        }
+        .card-fabrica .card-label { color: #a8b8d0; }
+
+        .card-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+            font-weight: 400;
+            font-style: italic;
+            color: var(--cream-light);
+            line-height: 1.1;
+            margin-bottom: 1rem;
+        }
+
+        .card-desc {
+            font-size: 0.85rem;
+            line-height: 1.75;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            flex: 1;
+        }
+
+        .card-detail {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-bottom: 0.4rem;
+        }
+        .card-detail svg {
+            width: 13px; height: 13px;
+            stroke: var(--gold);
+            fill: none;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
+        }
+        .card-fabrica .card-detail svg { stroke: #a8b8d0; }
+
+        .card-arrow {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 2rem;
+            font-family: var(--font-body);
+            font-size: 0.72rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--gold);
+            transition: gap 0.3s var(--ease-out-expo), color 0.3s ease;
+        }
+        .card-fabrica .card-arrow { color: #a8b8d0; }
+        .card-arrow svg {
+            width: 16px; height: 16px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: transform 0.35s var(--ease-out-expo);
+        }
+        .card:hover .card-arrow { gap: 14px; }
+        .card:hover .card-arrow svg { transform: translateX(4px); }
+
+        /* Divider between cards on mobile */
+        @media (max-width: 600px) {
+            .cards { grid-template-columns: 1fr; }
+        }
+
+        /* ── Animación de entrada ── */
+        .page-animate {
+            opacity: 0;
+            transform: translateY(24px);
+            animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .page-animate-delay {
+            animation-delay: 0.15s;
+        }
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── Logo bottom ── */
+        .page-logo {
+            margin-top: 4rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            opacity: 0.35;
+        }
+        .page-logo img { width: 36px; height: 36px; border-radius: 50%; }
+        .page-logo span {
+            font-family: var(--font-display);
+            font-size: 0.9rem;
+            font-style: italic;
+            color: var(--cream);
+        }
+
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="index.html" class="nav-brand">
+            <img src="assets/brand/logo_redondo_2.png" alt="Tartas Pastor" width="40" height="40">
+            <span class="nav-brand-name">Tartas Pastor</span>
+        </a>
+        <a href="index.html" class="nav-back">
+            <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+            Volver al inicio
+        </a>
+    </nav>
+
+    <main class="page">
+
+        <div class="page-animate">
+            <div class="ornament">
+                <span class="ornament-line"></span>
+                <span class="ornament-diamond"></span>
+                <span class="ornament-line"></span>
+            </div>
+            <p class="eyebrow">Tartas Pastor</p>
+            <h1 class="headline">¿Dónde quieres<br><em>encontrarnos?</em></h1>
+            <p class="subline">Visítanos en nuestra tienda de Barcelona o contacta con nosotros para distribución y pedidos al por mayor.</p>
+        </div>
+
+        <div class="cards page-animate page-animate-delay">
+
+            <a href="tienda.html" class="card card-tienda">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                </div>
+                <div class="card-label">Tienda física</div>
+                <div class="card-title">Nuestra tienda<br>en Barcelona</div>
+                <p class="card-desc">Más de 50 sabores de tarta de queso vasca artesanal. Visítanos, prueba y llévate la que más te guste.</p>
+                <div class="card-detail">
+                    <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    Comte Borrell, 72, local 2 · Barcelona
+                </div>
+                <div class="card-detail">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    Todos los días · 8:00 – 20:00
+                </div>
+                <div class="card-arrow">
+                    Ver la tienda
+                    <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </div>
+            </a>
+
+            <a href="distribuidores.html" class="card card-fabrica">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
+                </div>
+                <div class="card-label">Distribución</div>
+                <div class="card-title">Nuestra fábrica<br>en Esplugues</div>
+                <p class="card-desc">Producción artesanal para distribuidores, hostelería y comercios. Certificación IFS. Distribución nacional e internacional.</p>
+                <div class="card-detail">
+                    <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    C/ Esmeragda, 17 · Esplugues de Llobregat
+                </div>
+                <div class="card-detail">
+                    <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    +34 604 968 064 · fabrica@tartaspastor.com
+                </div>
+                <div class="card-arrow">
+                    Ver distribuidores
+                    <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </div>
+            </a>
+
+        </div>
+
+        <div class="page-logo">
+            <img src="assets/brand/logo_redondo_1.png" alt="Tartas Pastor">
+            <span>Tartas Pastor</span>
+        </div>
+
+    </main>
+
+</body>
+</html>

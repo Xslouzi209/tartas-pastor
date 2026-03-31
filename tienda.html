@@ -1,0 +1,1520 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda — Tartas Pastor</title>
+    <meta name="description" content="Visita nuestra tienda en Barcelona. Más de 50 sabores de tarta de queso vasca artesanal. Tartas enteras, mini tartas y surtidos. Comte Borrell, 72, local 2.">
+    <link rel="icon" type="image/png" href="assets/brand/logo_redondo_2.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Questrial&display=swap" rel="stylesheet">
+    <style>
+        /* ═══════════════════════════════════════════
+           CSS VARIABLES & RESET
+           ═══════════════════════════════════════════ */
+        :root {
+            --navy: #1B1B3A;
+            --navy-deep: #111128;
+            --navy-light: #2a2a52;
+            --cream: #DEC5A5;
+            --cream-light: #F0E4D1;
+            --cream-pale: #FAF6F0;
+            --gold: #C9A96E;
+            --gold-light: #E8D5A8;
+            --white: #FEFCF9;
+            --text-dark: #1B1B3A;
+            --text-light: #F0E4D1;
+            --text-muted: #8a8a9e;
+            --font-display: 'Cormorant Garamond', Georgia, serif;
+            --font-body: 'Questrial', 'Gill Sans', sans-serif;
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--text-dark);
+            background: var(--white);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        img { max-width: 100%; display: block; }
+        a { text-decoration: none; color: inherit; }
+
+        /* Grain overlay */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.025;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+            background-size: 200px;
+        }
+
+        /* ═══════════════════════════════════════════
+           SCROLL REVEAL
+           ═══════════════════════════════════════════ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.9s var(--ease-out-expo), transform 0.9s var(--ease-out-expo);
+        }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+        .reveal-delay-5 { transition-delay: 0.5s; }
+
+        /* ═══════════════════════════════════════════
+           NAVBAR
+           ═══════════════════════════════════════════ */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            padding: 0 clamp(1.5rem, 4vw, 4rem);
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(27, 27, 58, 0.97);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 2px 40px rgba(0,0,0,0.2);
+            transition: height 0.5s ease;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            z-index: 10;
+        }
+        .nav-brand img {
+            width: 44px; height: 44px;
+            border-radius: 50%;
+        }
+        .nav-brand-name {
+            font-family: var(--font-display);
+            font-size: 1.45rem;
+            font-weight: 500;
+            font-style: italic;
+            color: var(--cream);
+            letter-spacing: 0.02em;
+        }
+
+        .nav-links {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            gap: 2.2rem;
+            list-style: none;
+            padding-right: clamp(1.5rem, 4vw, 4rem);
+            z-index: 1001;
+        }
+        .nav-links a {
+            font-family: var(--font-body);
+            font-size: 0.82rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--cream-light);
+            position: relative;
+            padding: 4px 0;
+            transition: color 0.3s ease;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px; left: 0;
+            width: 0; height: 1px;
+            background: var(--gold);
+            transition: width 0.4s var(--ease-out-expo);
+        }
+        .nav-links a:hover { color: var(--gold-light); }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-links a.active { color: var(--gold); }
+        .nav-links a.active::after { width: 100%; }
+
+        .nav-cta {
+            font-family: var(--font-body) !important;
+            font-size: 0.78rem !important;
+            letter-spacing: 0.16em !important;
+            text-transform: uppercase;
+            color: var(--navy) !important;
+            background: var(--cream);
+            padding: 11px 26px !important;
+            transition: background 0.3s ease, transform 0.3s ease !important;
+        }
+        .nav-cta::after { display: none !important; }
+        .nav-cta:hover {
+            background: var(--gold-light) !important;
+            transform: translateY(-1px);
+        }
+
+        .nav-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 10;
+            background: none;
+            border: none;
+            padding: 8px;
+        }
+        .nav-toggle span {
+            width: 26px; height: 2px;
+            background: var(--cream);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            display: block;
+        }
+        .nav-toggle.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .nav-toggle.active span:nth-child(2) { opacity: 0; }
+        .nav-toggle.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none !important;
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                width: 100vw !important;
+                height: 100vh !important;
+                padding-right: 0 !important;
+                background: var(--navy-deep) !important;
+                flex-direction: column !important;
+                justify-content: center !important;
+                align-items: center !important;
+                gap: 2rem !important;
+                z-index: 9999 !important;
+                margin: 0 !important;
+                list-style: none !important;
+            }
+            .nav-links.open {
+                display: flex !important;
+            }
+            .nav-links a { font-size: 1.3rem; }
+            .nav-cta { padding: 14px 36px !important; }
+            .nav-toggle { display: flex; z-index: 10000; position: relative; }
+        }
+
+        /* ═══════════════════════════════════════════
+           HERO — PAGE HEADER
+           ═══════════════════════════════════════════ */
+        .page-hero {
+            min-height: 80vh;
+            background: var(--navy-deep);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: calc(80px + 4rem) clamp(1.5rem, 5vw, 4rem) 5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-hero-bg {
+            position: absolute;
+            inset: 0;
+            background-image: url('assets/images/ChatGPT Image 31 mar 2026, 11_10_32.png');
+            background-size: cover;
+            background-position: center 30%;
+            transform: scale(1.06);
+            transition: transform 8s ease-out;
+            will-change: transform;
+        }
+
+        .page-hero.loaded .page-hero-bg {
+            transform: scale(1);
+        }
+
+        .page-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                135deg,
+                rgba(17, 17, 40, 0.80) 0%,
+                rgba(27, 27, 58, 0.55) 40%,
+                rgba(27, 27, 58, 0.45) 60%,
+                rgba(17, 17, 40, 0.78) 100%
+            );
+            z-index: 1;
+        }
+
+        .page-hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 180px;
+            background: linear-gradient(to bottom, transparent, var(--navy-deep));
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .page-hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 750px;
+        }
+
+        .page-hero-label {
+            display: inline-block;
+            font-family: var(--font-body);
+            font-size: 0.72rem;
+            letter-spacing: 0.26em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 1.2rem;
+        }
+
+        .page-hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 7vw, 5.5rem);
+            font-weight: 400;
+            color: var(--cream-light);
+            line-height: 1.05;
+            margin-bottom: 1.2rem;
+        }
+
+        .page-hero h1 em {
+            font-style: italic;
+            color: var(--gold);
+        }
+
+        .page-hero p {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: var(--text-muted);
+            max-width: 520px;
+            margin: 0 auto 2.5rem;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 40px;
+            background: var(--cream);
+            color: var(--navy);
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            border-radius: 2px;
+            transition: background 0.3s ease, transform 0.3s ease;
+            text-decoration: none;
+        }
+        .hero-cta:hover {
+            background: var(--gold-light);
+            transform: translateY(-2px);
+        }
+
+        .hero-ornament {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+        .hero-ornament-line {
+            width: 50px; height: 1px;
+            background: linear-gradient(to right, transparent, var(--gold));
+        }
+        .hero-ornament-line:last-child {
+            background: linear-gradient(to left, transparent, var(--gold));
+        }
+        .hero-ornament-diamond {
+            width: 6px; height: 6px;
+            background: var(--gold);
+            transform: rotate(45deg);
+        }
+
+        /* ═══════════════════════════════════════════
+           SECTION COMMON
+           ═══════════════════════════════════════════ */
+        .section-padding { padding: clamp(4rem, 8vw, 7rem) clamp(1.5rem, 5vw, 4rem); }
+
+        .section-label {
+            display: inline-block;
+            font-family: var(--font-body);
+            font-size: 0.72rem;
+            letter-spacing: 0.26em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 0.8rem;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.2rem, 4vw, 3.2rem);
+            font-weight: 400;
+            color: var(--navy);
+            line-height: 1.1;
+            margin-bottom: 1rem;
+        }
+
+        .section-title-light { color: var(--cream-light); }
+
+        /* ═══════════════════════════════════════════
+           INFO DE TIENDA
+           ═══════════════════════════════════════════ */
+        .store-info-section {
+            background: var(--cream-pale);
+            position: relative;
+        }
+        .store-info-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--cream), transparent);
+        }
+
+        .store-info-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(2.5rem, 5vw, 5rem);
+            align-items: center;
+        }
+
+        .store-info-image {
+            position: relative;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .store-info-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            aspect-ratio: 4/5;
+            border-radius: 4px;
+        }
+        .store-info-image-badge {
+            position: absolute;
+            bottom: 24px;
+            left: 24px;
+            background: rgba(27, 27, 58, 0.92);
+            backdrop-filter: blur(8px);
+            padding: 16px 22px;
+            border-radius: 4px;
+            border: 1px solid rgba(201, 169, 110, 0.3);
+        }
+        .store-info-image-badge span {
+            display: block;
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--gold);
+            line-height: 1;
+        }
+        .store-info-image-badge small {
+            font-family: var(--font-body);
+            font-size: 0.7rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--cream-light);
+            opacity: 0.8;
+        }
+
+        .store-info-text p {
+            font-size: 0.92rem;
+            line-height: 1.85;
+            color: #5a5a72;
+            margin-bottom: 1.2rem;
+        }
+        .store-info-text p strong { color: var(--navy); font-weight: 600; }
+
+        .store-details {
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .store-detail-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+        }
+        .store-detail-icon {
+            width: 40px; height: 40px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            background: rgba(201, 169, 110, 0.1);
+            border: 1px solid rgba(201, 169, 110, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .store-detail-icon svg {
+            width: 18px; height: 18px;
+            stroke: var(--gold);
+            fill: none;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .store-detail-item h4 {
+            font-family: var(--font-body);
+            font-size: 0.72rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 0.25rem;
+        }
+        .store-detail-item p {
+            font-size: 0.88rem;
+            line-height: 1.6;
+            color: #5a5a72;
+            margin: 0 !important;
+        }
+        .store-detail-item a {
+            color: var(--navy);
+            border-bottom: 1px solid rgba(27,27,58,0.2);
+            transition: border-color 0.3s ease, color 0.3s ease;
+        }
+        .store-detail-item a:hover { color: var(--gold); border-color: var(--gold); }
+
+        .store-cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 2rem;
+            padding: 14px 32px;
+            background: var(--navy);
+            color: var(--cream-light);
+            font-family: var(--font-body);
+            font-size: 0.78rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            border-radius: 2px;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+        .store-cta-btn svg {
+            width: 18px; height: 18px;
+            stroke: var(--gold);
+            fill: none;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
+        }
+        .store-cta-btn:hover { background: var(--navy-light); transform: translateY(-2px); }
+
+        @media (max-width: 768px) {
+            .store-info-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ═══════════════════════════════════════════
+           FORMATOS
+           ═══════════════════════════════════════════ */
+        .formats-section {
+            background: var(--navy);
+            position: relative;
+        }
+
+        .formats-intro {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 4rem;
+        }
+        .formats-intro p {
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: var(--text-muted);
+        }
+
+        .formats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: clamp(1rem, 2vw, 1.8rem);
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .format-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(222, 197, 165, 0.12);
+            padding: clamp(1.8rem, 3vw, 2.5rem) clamp(1.2rem, 2vw, 1.8rem);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.4s var(--ease-out-expo), border-color 0.4s ease, background 0.4s ease;
+        }
+        .format-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: var(--gold);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s var(--ease-out-expo);
+        }
+        .format-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(201, 169, 110, 0.28);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .format-card:hover::before { transform: scaleX(1); }
+
+        .format-illustration {
+            width: 72px; height: 72px;
+            margin: 0 auto 1.4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .format-illustration img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 4px;
+            transition: transform 0.5s var(--ease-out-expo);
+        }
+        .format-card:hover .format-illustration img { transform: scale(1.08); }
+
+        .format-size {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--gold);
+            line-height: 1;
+            margin-bottom: 0.25rem;
+        }
+        .format-unit {
+            font-family: var(--font-body);
+            font-size: 0.68rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+        .format-name {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            font-weight: 500;
+            font-style: italic;
+            color: var(--cream-light);
+            margin-bottom: 0.6rem;
+        }
+        .format-desc {
+            font-size: 0.82rem;
+            line-height: 1.7;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 768px) {
+            .formats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 480px) {
+            .formats-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ═══════════════════════════════════════════
+           SABORES
+           ═══════════════════════════════════════════ */
+        .flavours-section {
+            background: var(--cream-pale);
+            position: relative;
+        }
+        .flavours-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--cream), transparent);
+        }
+
+        .flavours-intro {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 4rem;
+        }
+        .flavours-intro p {
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: var(--text-muted);
+        }
+
+        .flavours-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: clamp(1.2rem, 2.5vw, 2rem);
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .flavour-card {
+            background: var(--white);
+            border: 1px solid rgba(222, 197, 165, 0.25);
+            overflow: hidden;
+            position: relative;
+            transition: transform 0.4s var(--ease-out-expo), box-shadow 0.4s ease, border-color 0.4s ease;
+        }
+        .flavour-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: var(--flavor-accent, var(--gold));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s var(--ease-out-expo);
+            z-index: 2;
+        }
+        .flavour-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 50px rgba(27, 27, 58, 0.1);
+            border-color: rgba(222, 197, 165, 0.5);
+        }
+        .flavour-card:hover::before { transform: scaleX(1); }
+
+        .flavour-img-wrap {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 4/3;
+        }
+        .flavour-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.7s var(--ease-out-expo);
+        }
+        .flavour-card:hover .flavour-img-wrap img { transform: scale(1.05); }
+
+        .flavour-info {
+            padding: 1.3rem 1.5rem 1.6rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .flavour-name {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 500;
+            font-style: italic;
+            color: var(--navy);
+            line-height: 1;
+        }
+        .flavour-tag {
+            font-family: var(--font-body);
+            font-size: 0.66rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+        .flavour-dot {
+            width: 13px; height: 13px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            box-shadow: 0 0 0 3px rgba(255,255,255,0.9), 0 0 0 4px rgba(0,0,0,0.08);
+        }
+
+        @media (max-width: 768px) {
+            .flavours-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 480px) {
+            .flavours-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ═══════════════════════════════════════════
+           SURTIDOS / MINI TARTAS
+           ═══════════════════════════════════════════ */
+        .surtidos-section {
+            background: var(--navy);
+            position: relative;
+            overflow: hidden;
+        }
+        .surtidos-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 60% 70% at 50% 50%, rgba(201,169,110,0.05) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .surtidos-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(2rem, 4vw, 4rem);
+            align-items: center;
+        }
+
+        .surtidos-image {
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .surtidos-image img {
+            width: 100%;
+            object-fit: cover;
+            aspect-ratio: 4/3;
+            border-radius: 4px;
+            filter: drop-shadow(0 16px 40px rgba(0,0,0,0.4));
+        }
+
+        .surtidos-text p {
+            font-size: 0.92rem;
+            line-height: 1.85;
+            color: var(--text-muted);
+            margin-bottom: 1.2rem;
+        }
+        .surtidos-text p strong { color: var(--cream-light); }
+
+        .surtidos-list {
+            list-style: none;
+            margin-top: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+        .surtidos-list li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+        }
+        .surtidos-list li::before {
+            content: '';
+            width: 5px; height: 5px;
+            background: var(--gold);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .surtidos-list li strong { color: var(--cream-light); }
+
+        @media (max-width: 768px) {
+            .surtidos-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ═══════════════════════════════════════════
+           MAPA / CÓMO LLEGAR
+           ═══════════════════════════════════════════ */
+        .map-section {
+            background: var(--cream-pale);
+            position: relative;
+        }
+        .map-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--cream), transparent);
+        }
+
+        .map-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1.4fr;
+            gap: clamp(2rem, 4vw, 4rem);
+            align-items: start;
+        }
+
+        .map-info h2 { margin-bottom: 1.5rem; }
+        .map-info p {
+            font-size: 0.92rem;
+            line-height: 1.85;
+            color: #5a5a72;
+            margin-bottom: 1rem;
+        }
+        .map-info p strong { color: var(--navy); }
+
+        .map-details {
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+        .map-detail {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 16px 20px;
+            background: var(--white);
+            border: 1px solid rgba(222, 197, 165, 0.3);
+            border-radius: 4px;
+        }
+        .map-detail-icon {
+            width: 36px; height: 36px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .map-detail-icon svg {
+            width: 20px; height: 20px;
+            stroke: var(--gold);
+            fill: none;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .map-detail h4 {
+            font-family: var(--font-body);
+            font-size: 0.7rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 3px;
+        }
+        .map-detail p {
+            font-size: 0.86rem;
+            line-height: 1.55;
+            color: #5a5a72;
+            margin: 0 !important;
+        }
+        .map-detail a {
+            color: var(--navy);
+            border-bottom: 1px solid rgba(27,27,58,0.2);
+            transition: color 0.3s ease, border-color 0.3s ease;
+        }
+        .map-detail a:hover { color: var(--gold); border-color: var(--gold); }
+
+        .map-iframe-wrap {
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 12px 40px rgba(27,27,58,0.1);
+            position: relative;
+            padding-top: 75%;
+        }
+        .map-iframe-wrap iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .map-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 2rem;
+            padding: 14px 32px;
+            background: var(--navy);
+            color: var(--cream-light);
+            font-family: var(--font-body);
+            font-size: 0.78rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            border-radius: 2px;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+        .map-cta svg {
+            width: 16px; height: 16px;
+            stroke: var(--gold);
+            fill: none;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .map-cta:hover { background: var(--navy-light); transform: translateY(-2px); }
+
+        @media (max-width: 768px) {
+            .map-grid { grid-template-columns: 1fr; }
+            .map-iframe-wrap { padding-top: 60%; }
+        }
+
+        /* ═══════════════════════════════════════════
+           CTA BANNER
+           ═══════════════════════════════════════════ */
+        .cta-section {
+            background: var(--navy-deep);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 50% 60% at 50% 50%, rgba(201,169,110,0.06) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .cta-inner {
+            position: relative;
+            z-index: 1;
+            max-width: 620px;
+            margin: 0 auto;
+        }
+        .cta-inner p {
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 36px;
+            background: var(--cream);
+            color: var(--navy);
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            border-radius: 2px;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+        .btn-primary svg {
+            width: 18px; height: 18px;
+            fill: currentColor;
+        }
+        .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 36px;
+            background: transparent;
+            color: var(--cream-light);
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            border: 1px solid rgba(222, 197, 165, 0.3);
+            border-radius: 2px;
+            transition: border-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+        }
+        .btn-secondary svg {
+            width: 18px; height: 18px;
+            stroke: var(--gold);
+            fill: none;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .btn-secondary:hover {
+            border-color: var(--gold);
+            color: var(--gold-light);
+            transform: translateY(-2px);
+        }
+
+        /* ═══════════════════════════════════════════
+           FOOTER
+           ═══════════════════════════════════════════ */
+        .footer {
+            background: var(--navy-deep);
+            border-top: 1px solid rgba(222, 197, 165, 0.08);
+        }
+        .footer-top {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem) clamp(2rem, 4vw, 3rem);
+            display: flex;
+            gap: clamp(2rem, 5vw, 4rem);
+            flex-wrap: wrap;
+        }
+        .footer-brand {
+            flex: 1.5;
+            min-width: 200px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .footer-brand img { border-radius: 50%; }
+        .footer-brand-name {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            font-weight: 500;
+            font-style: italic;
+            color: var(--cream);
+        }
+        .footer-brand-tagline {
+            font-size: 0.82rem;
+            line-height: 1.7;
+            color: var(--text-muted);
+        }
+        .footer-col {
+            flex: 1;
+            min-width: 140px;
+        }
+        .footer-col h4 {
+            font-family: var(--font-body);
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 1.2rem;
+        }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 0.6rem; }
+        .footer-col ul li a,
+        .footer-col ul li p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            transition: color 0.3s ease;
+        }
+        .footer-col ul li a:hover { color: var(--cream-light); }
+        .footer-socials { display: flex; gap: 12px; }
+        .footer-social-link {
+            width: 38px; height: 38px;
+            border-radius: 50%;
+            background: rgba(222, 197, 165, 0.07);
+            border: 1px solid rgba(222, 197, 165, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+        .footer-social-link:hover {
+            background: rgba(201, 169, 110, 0.15);
+            border-color: rgba(201, 169, 110, 0.4);
+        }
+        .footer-social-link svg {
+            width: 16px; height: 16px;
+            fill: var(--text-muted);
+            transition: fill 0.3s ease;
+        }
+        .footer-social-link:hover svg { fill: var(--cream-light); }
+        .footer-bottom {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 1.5rem clamp(1.5rem, 5vw, 4rem);
+            border-top: 1px solid rgba(222, 197, 165, 0.07);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .footer-copyright {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            opacity: 0.7;
+        }
+
+        @media (max-width: 600px) {
+            .footer-top { flex-direction: column; }
+            .footer-bottom { flex-direction: column; text-align: center; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- ═══════════════ NAVBAR ═══════════════ -->
+    <nav class="navbar" id="navbar">
+        <a href="index.html" class="nav-brand">
+            <img src="assets/brand/logo_redondo_2.png" alt="Tartas Pastor logo" width="44" height="44">
+            <span class="nav-brand-name">Tartas Pastor</span>
+        </a>
+        <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+    <!-- Mobile menu overlay (outside navbar to avoid backdrop-filter stacking context) -->
+    <ul class="nav-links" id="navLinks">
+        <li><a href="index.html#inicio">Inicio</a></li>
+        <li><a href="tienda.html" class="active">Tienda</a></li>
+        <li><a href="distribuidores.html">Distribuidores</a></li>
+        <li><a href="pedidos.html" class="nav-cta">Haz tu pedido</a></li>
+    </ul>
+
+    <!-- ═══════════════ PAGE HERO ═══════════════ -->
+    <header class="page-hero" id="pageHero">
+        <div class="page-hero-bg"></div>
+        <div class="page-hero-content">
+            <div class="hero-ornament">
+                <span class="hero-ornament-line"></span>
+                <span class="hero-ornament-diamond"></span>
+                <span class="hero-ornament-line"></span>
+            </div>
+            <span class="page-hero-label">Tienda física · Barcelona</span>
+            <h1>Visítanos y<br><em>prueba nuestras tartas</em></h1>
+            <p>Más de 50 sabores de tarta de queso vasca artesanal, desde los clásicos hasta creaciones de temporada que solo encontrarás en tienda.</p>
+            <a href="pedidos.html" class="hero-cta">Hacer un pedido</a>
+        </div>
+    </header>
+
+    <!-- ═══════════════ INFO DE TIENDA ═══════════════ -->
+    <section class="store-info-section section-padding">
+        <div class="store-info-grid">
+            <div class="store-info-image reveal">
+                <img src="assets/images/surtido-mini-tartas.png" alt="Surtido de tartas en la tienda Tartas Pastor">
+                <div class="store-info-image-badge">
+                    <span>+50</span>
+                    <small>Sabores</small>
+                </div>
+            </div>
+            <div class="store-info-text reveal reveal-delay-1">
+                <span class="section-label">Nuestra tienda</span>
+                <h2 class="section-title">Un lugar donde<br>todo sabe a queso</h2>
+                <p>Situada en el corazón de Barcelona, nuestra tienda es el lugar donde podrás descubrir toda la gama de <strong>Tartas Pastor</strong>: desde la clásica tarta de queso vasca hasta las variedades de temporada que solo encontrarás aquí.</p>
+                <p>Cada tarta se elabora artesanalmente en nuestra fábrica de Esplugues de Llobregat, con <strong>ingredientes 100% naturales</strong>, sin conservantes ni aditivos. Las tartas llegan a tienda frescas, listas para degustar o para llevar.</p>
+                <div class="store-details">
+                    <div class="store-detail-item">
+                        <div class="store-detail-icon">
+                            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        </div>
+                        <div>
+                            <h4>Dirección</h4>
+                            <p>Carrer del Comte Borrell, 72, local 2<br>08015 Barcelona</p>
+                        </div>
+                    </div>
+                    <div class="store-detail-item">
+                        <div class="store-detail-icon">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        </div>
+                        <div>
+                            <h4>Horario</h4>
+                            <p>Todos los días: 8:00 – 20:00</p>
+                        </div>
+                    </div>
+                    <div class="store-detail-item">
+                        <div class="store-detail-icon">
+                            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                        </div>
+                        <div>
+                            <h4>Teléfono</h4>
+                            <p><a href="tel:+34641517883">+34 641 517 883</a></p>
+                        </div>
+                    </div>
+                    <div class="store-detail-item">
+                        <div class="store-detail-icon">
+                            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                        </div>
+                        <div>
+                            <h4>Email</h4>
+                            <p><a href="mailto:tiendatartaspastor@gmail.com">tiendatartaspastor@gmail.com</a></p>
+                        </div>
+                    </div>
+                </div>
+                <a href="https://wa.me/34641517883" target="_blank" rel="noopener" class="store-cta-btn">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" fill="currentColor"/></svg>
+                    Escríbenos por WhatsApp
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════ FORMATOS ═══════════════ -->
+    <section class="formats-section section-padding">
+        <div class="formats-intro reveal">
+            <span class="section-label">Qué encontrarás</span>
+            <h2 class="section-title section-title-light">Formatos<br><em style="color:var(--gold)">disponibles</em></h2>
+            <p>Tanto si buscas una tarta para compartir como una ración individual para degustar, tenemos el formato perfecto para ti.</p>
+        </div>
+        <div class="formats-grid">
+            <div class="format-card reveal reveal-delay-1">
+                <div class="format-illustration">
+                    <img src="assets/images/tarta-pistacho.png" alt="Tarta entera">
+                </div>
+                <div class="format-size">1 kg</div>
+                <div class="format-unit">Tarta entera</div>
+                <div class="format-name">La clásica</div>
+                <p class="format-desc">La tarta entera de queso vasca, perfecta para 6–8 personas. Ideal para celebraciones y reuniones.</p>
+            </div>
+            <div class="format-card reveal reveal-delay-2">
+                <div class="format-illustration">
+                    <img src="assets/images/tarta-oreo.png" alt="Media tarta">
+                </div>
+                <div class="format-size">500 g</div>
+                <div class="format-unit">Media tarta</div>
+                <div class="format-name">Para compartir</div>
+                <p class="format-desc">La mitad de una tarta entera. Perfecta para 3–4 personas o para probar un sabor nuevo sin comprometerse.</p>
+            </div>
+            <div class="format-card reveal reveal-delay-3">
+                <div class="format-illustration">
+                    <img src="assets/images/mini-tartas.png" alt="Mini tartas individuales">
+                </div>
+                <div class="format-size">100 g</div>
+                <div class="format-unit">Mini tarta</div>
+                <div class="format-name">Ración individual</div>
+                <p class="format-desc">Mini tartas individuales para degustar en el momento o llevarte a casa. Disponibles en todos los sabores.</p>
+            </div>
+            <div class="format-card reveal reveal-delay-4">
+                <div class="format-illustration">
+                    <img src="assets/images/surtido-mini-tartas.png" alt="Surtido de sabores">
+                </div>
+                <div class="format-size">Surtido</div>
+                <div class="format-unit">Caja degustación</div>
+                <div class="format-name">Degustación</div>
+                <p class="format-desc">Una selección de mini tartas en distintos sabores, presentadas en caja para regalo o para disfrutar en casa.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════ SABORES ═══════════════ -->
+    <section class="flavours-section section-padding">
+        <div class="flavours-intro reveal">
+            <span class="section-label">Toda la gama</span>
+            <h2 class="section-title">Nuestros sabores</h2>
+            <p>Desde la receta clásica vasca hasta las variedades más creativas. Todos elaborados artesanalmente con ingredientes naturales.</p>
+        </div>
+        <div class="flavours-grid">
+
+            <div class="flavour-card reveal reveal-delay-1" style="--flavor-accent: #C9A96E;">
+                <div class="flavour-img-wrap">
+                    <img src="assets/images/tarta-pistacho.png" alt="Tarta de queso vasca clásica">
+                </div>
+                <div class="flavour-info">
+                    <div>
+                        <div class="flavour-name">Vasca clásica</div>
+                        <div class="flavour-tag">La receta original</div>
+                    </div>
+                    <span class="flavour-dot" style="background: #C9A96E;"></span>
+                </div>
+            </div>
+
+            <div class="flavour-card reveal reveal-delay-2" style="--flavor-accent: #5a3d2b;">
+                <div class="flavour-img-wrap">
+                    <img src="assets/images/tarta-oreo.png" alt="Tarta de Oreo">
+                </div>
+                <div class="flavour-info">
+                    <div>
+                        <div class="flavour-name">Oreo</div>
+                        <div class="flavour-tag">Crujiente y cremosa</div>
+                    </div>
+                    <span class="flavour-dot" style="background: #2c2c2c;"></span>
+                </div>
+            </div>
+
+            <div class="flavour-card reveal reveal-delay-3" style="--flavor-accent: #7a9e4e;">
+                <div class="flavour-img-wrap">
+                    <img src="assets/images/tarta-sabor-pistacho.png" alt="Tarta de pistacho">
+                </div>
+                <div class="flavour-info">
+                    <div>
+                        <div class="flavour-name">Pistacho</div>
+                        <div class="flavour-tag">Crema artesanal</div>
+                    </div>
+                    <span class="flavour-dot" style="background: #7a9e4e;"></span>
+                </div>
+            </div>
+
+            <div class="flavour-card reveal reveal-delay-1" style="--flavor-accent: #8B4513;">
+                <div class="flavour-img-wrap">
+                    <img src="assets/images/tarta-pistacho.png" alt="Tarta de chocolate">
+                </div>
+                <div class="flavour-info">
+                    <div>
+                        <div class="flavour-name">Chocolate</div>
+                        <div class="flavour-tag">Intenso y suave</div>
+                    </div>
+                    <span class="flavour-dot" style="background: #6b3a2a;"></span>
+                </div>
+            </div>
+
+            <div class="flavour-card reveal reveal-delay-2" style="--flavor-accent: #c67c3a;">
+                <div class="flavour-img-wrap">
+                    <img src="assets/images/tarta-oreo.png" alt="Tarta de Lotus">
+                </div>
+                <div class="flavour-info">
+                    <div>
+                        <div class="flavour-name">Lotus</div>
+                        <div class="flavour-tag">Caramelo especiado</div>
+                    </div>
+                    <span class="flavour-dot" style="background: #c67c3a;"></span>
+                </div>
+            </div>
+
+            <div class="flavour-card reveal reveal-delay-3" style="--flavor-accent: #e8d060;">
+                <div class="flavour-img-wrap">
+                    <img src="assets/images/tarta-sabor-pistacho.png" alt="Tarta de limón">
+                </div>
+                <div class="flavour-info">
+                    <div>
+                        <div class="flavour-name">Limón</div>
+                        <div class="flavour-tag">Fresco y cítrico</div>
+                    </div>
+                    <span class="flavour-dot" style="background: #e8d060;"></span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ═══════════════ SURTIDOS ═══════════════ -->
+    <section class="surtidos-section section-padding">
+        <div class="surtidos-grid">
+            <div class="surtidos-image reveal">
+                <img src="assets/images/surtido-mini-tartas.png" alt="Surtido de mini tartas Tartas Pastor">
+            </div>
+            <div class="surtidos-text reveal reveal-delay-1">
+                <span class="section-label">Ideal para regalar</span>
+                <h2 class="section-title section-title-light">Surtidos y<br><em style="color:var(--gold)">cajas degustación</em></h2>
+                <p>¿No sabes por qué sabor empezar? Nuestros <strong>surtidos de mini tartas</strong> son la opción perfecta para descubrir toda la gama o para hacer un regalo especial.</p>
+                <p>Cada caja incluye una selección de los sabores más populares, presentada con el cuidado y la elegancia que merece un producto artesanal de esta calidad.</p>
+                <ul class="surtidos-list">
+                    <li><strong>Surtido clásico</strong> — Vasca, chocolate y limón</li>
+                    <li><strong>Surtido premium</strong> — Pistacho, Lotus y Oreo</li>
+                    <li><strong>Surtido completo</strong> — Los 6 sabores más populares</li>
+                    <li><strong>Caja personalizada</strong> — Elige tú la combinación</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════ MAPA ═══════════════ -->
+    <section class="map-section section-padding">
+        <div class="map-grid">
+            <div class="map-info reveal">
+                <span class="section-label">Cómo llegar</span>
+                <h2 class="section-title">Encuéntranos<br>en Barcelona</h2>
+                <p>Estamos en el Eixample de Barcelona, muy bien comunicados en transporte público y con fácil acceso en coche.</p>
+                <div class="map-details">
+                    <div class="map-detail">
+                        <div class="map-detail-icon">
+                            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        </div>
+                        <div>
+                            <h4>Dirección</h4>
+                            <p>Carrer del Comte Borrell, 72, local 2<br>08015 Barcelona</p>
+                        </div>
+                    </div>
+                    <div class="map-detail">
+                        <div class="map-detail-icon">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        </div>
+                        <div>
+                            <h4>Horario</h4>
+                            <p>Todos los días: 8:00 – 20:00</p>
+                        </div>
+                    </div>
+                    <div class="map-detail">
+                        <div class="map-detail-icon">
+                            <svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h5l2 3v5h-7z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                        </div>
+                        <div>
+                            <h4>Transporte público</h4>
+                            <p>Metro: L1 Rocafort · L2 Sant Antoni<br>Bus: 55, 91, V7</p>
+                        </div>
+                    </div>
+                </div>
+                <a href="https://share.google/GXdoX6YCHdWy6mRFV" target="_blank" rel="noopener" class="map-cta">
+                    <svg viewBox="0 0 24 24"><path d="M21.71 11.29l-9-9a.996.996 0 00-1.41 0l-9 9a.996.996 0 000 1.41l9 9c.39.39 1.02.39 1.41 0l9-9a.996.996 0 000-1.41zM14 14.5V12h-4v3H8v-4c0-.55.45-1 1-1h5V7.5l3.5 3.5-3.5 3.5z"/></svg>
+                    Abrir en Google Maps
+                </a>
+            </div>
+            <div class="map-iframe-wrap reveal reveal-delay-1">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2993.4095638!2d2.15847!3d41.37947!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a4a3f8cbef37a5%3A0x1!2sCarrer+del+Comte+Borrell%2C+72%2C+08015+Barcelona!5e0!3m2!1ses!2ses!4v1680000000000!5m2!1ses!2ses"
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                    title="Tienda Tartas Pastor en Google Maps">
+                </iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════ FOOTER ═══════════════ -->
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="footer-brand">
+                <img src="assets/brand/logo_redondo_1.png" alt="Tartas Pastor" width="60" height="60">
+                <span class="footer-brand-name">Tartas Pastor</span>
+                <p class="footer-brand-tagline">Tartas de queso artesanales elaboradas con pasión y los mejores ingredientes.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Navegación</h4>
+                <ul>
+                    <li><a href="index.html#inicio">Inicio</a></li>
+                    <li><a href="index.html#tartas">Nuestras Tartas</a></li>
+                    <li><a href="tienda.html">Tienda</a></li>
+                    <li><a href="distribuidores.html">Distribuidores</a></li>
+                    <li><a href="index.html#nosotros">Sobre Nosotros</a></li>
+                    <li><a href="index.html#contacto">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Tienda</h4>
+                <ul>
+                    <li><p>Comte Borrell, 72, local 2</p></li>
+                    <li><p>08015 Barcelona</p></li>
+                    <li><p>Todos los días: 8:00 – 20:00</p></li>
+                    <li><p>+34 641 517 883</p></li>
+                    <li><p>tiendatartaspastor@gmail.com</p></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Síguenos</h4>
+                <div class="footer-socials">
+                    <a href="https://www.instagram.com/tartas.pastor/?hl=es" target="_blank" rel="noopener" class="footer-social-link" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p class="footer-copyright">© 2026 Tartas Pastor. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- ═══════════════ JAVASCRIPT ═══════════════ -->
+    <script>
+        // Hero image zoom-in on load
+        window.addEventListener('load', () => {
+            document.getElementById('pageHero').classList.add('loaded');
+        });
+
+        // Mobile menu toggle
+        const navToggle = document.getElementById('navToggle');
+        const navLinks = document.getElementById('navLinks');
+        navToggle.addEventListener('click', () => {
+            navToggle.classList.toggle('active');
+            navLinks.classList.toggle('open');
+        });
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navToggle.classList.remove('active');
+                navLinks.classList.remove('open');
+            });
+        });
+
+        // Scroll reveal
+        const reveals = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.12 });
+        reveals.forEach(el => revealObserver.observe(el));
+    </script>
+
+</body>
+</html>

@@ -1509,6 +1509,7 @@
     <!-- Mobile menu overlay (outside navbar to avoid backdrop-filter stacking context) -->
     <ul class="nav-links" id="navLinks">
         <li><a href="index.html#inicio">Inicio</a></li>
+        <li><a href="tienda.html">Tienda</a></li>
         <li><a href="distribuidores.html" class="active">Distribuidores</a></li>
         <li><a href="pedidos.html" class="nav-cta">Haz tu pedido</a></li>
     </ul>
@@ -1932,6 +1933,14 @@
                         <label for="dist-mensaje">Comentarios</label>
                         <textarea id="dist-mensaje" name="mensaje" rows="5" placeholder="Cuéntanos qué producto te interesa, volúmenes, plazos…" required></textarea>
                     </div>
+                    <div class="form-field">
+                        <label>Archivo adjunto <span style="opacity:0.5;font-size:0.78rem;">(opcional · PDF, imagen, Word…)</span></label>
+                        <input type="file" id="dist-archivo" accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg,.webp,.gif" style="display:none;">
+                        <label for="dist-archivo" class="file-label" id="fileLabelDisplay">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+                            <span id="fileNameDisplay">Seleccionar archivo</span>
+                        </label>
+                    </div>
                     <button type="submit" class="form-submit">
                         Enviar consulta
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
@@ -1976,6 +1985,7 @@
                 <ul>
                     <li><a href="index.html#inicio">Inicio</a></li>
                     <li><a href="index.html#tartas">Nuestras Tartas</a></li>
+                    <li><a href="tienda.html">Tienda</a></li>
                     <li><a href="distribuidores.html">Distribuidores</a></li>
                     <li><a href="index.html#nosotros">Sobre Nosotros</a></li>
                     <li><a href="index.html#ubicacion">Ubicación</a></li>
@@ -2045,7 +2055,28 @@
         }, { threshold: 0.12 });
         reveals.forEach(el => revealObserver.observe(el));
 
-        // Contact form → EmailJS
+        // Mostrar nombre de archivo seleccionado
+        const archivoInput = document.getElementById('dist-archivo');
+        const fileLabelDisplay = document.getElementById('fileLabelDisplay');
+        const fileNameDisplay = document.getElementById('fileNameDisplay');
+        if (archivoInput) {
+            archivoInput.addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    const file = this.files[0];
+                    const sizeMB = (file.size / 1024 / 1024).toFixed(1);
+                    fileNameDisplay.textContent = file.name + ' (' + sizeMB + ' MB)';
+                    fileLabelDisplay.classList.add('has-file');
+                } else {
+                    fileNameDisplay.textContent = 'Seleccionar archivo';
+                    fileLabelDisplay.classList.remove('has-file');
+                }
+            });
+        }
+
+        // Contact form → EmailJS + Cloudinary
+        const CLOUDINARY_CLOUD = 'dyr58tqhe';
+        const CLOUDINARY_PRESET = 'tartas';
+
         const distForm = document.getElementById('distForm');
         if (distForm) {
             distForm.addEventListener('submit', function(e) {
@@ -2053,6 +2084,7 @@
                 const nombre  = document.getElementById('dist-nombre').value.trim();
                 const email   = document.getElementById('dist-email').value.trim();
                 const mensaje = document.getElementById('dist-mensaje').value.trim();
+                const archivo = document.getElementById('dist-archivo').files[0];
 
                 if (!nombre || !email || !mensaje) {
                     alert('Por favor, rellena todos los campos obligatorios.');
@@ -2061,27 +2093,57 @@
 
                 const submitBtn = distForm.querySelector('.form-submit');
                 submitBtn.disabled = true;
-                submitBtn.innerHTML = 'Enviando…';
 
-                emailjs.send(
-                    'service_3elw4mf',
-                    'template_dgur8o3',
-                    {
+                function enviarEmail(fileUrl) {
+                    const params = {
                         from_name: nombre,
                         from_email: email,
-                        message: mensaje
-                    }
-                ).then(function() {
-                    distForm.reset();
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = 'Enviar consulta <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>';
-                    alert('¡Mensaje enviado correctamente! Te responderemos lo antes posible.');
-                }, function(error) {
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = 'Enviar consulta <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>';
-                    alert('Hubo un error al enviar el mensaje. Por favor, inténtalo de nuevo o escríbenos directamente a fabrica@tartaspastor.com');
-                    console.error('EmailJS error:', error);
-                });
+                        message: mensaje + (fileUrl ? '\n\nArchivo adjunto: ' + fileUrl : '')
+                    };
+                    emailjs.send('service_3elw4mf', 'template_dgur8o3', params)
+                        .then(function() {
+                            distForm.reset();
+                            fileNameDisplay.textContent = 'Seleccionar archivo';
+                            fileLabelDisplay.classList.remove('has-file');
+                            submitBtn.disabled = false;
+                            submitBtn.innerHTML = 'Enviar consulta <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>';
+                            alert('¡Mensaje enviado correctamente! Te responderemos lo antes posible.');
+                        }, function(error) {
+                            submitBtn.disabled = false;
+                            submitBtn.innerHTML = 'Enviar consulta <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>';
+                            alert('Hubo un error al enviar el mensaje. Por favor, inténtalo de nuevo o escríbenos directamente a fabrica@tartaspastor.com');
+                            console.error('EmailJS error:', error);
+                        });
+                }
+
+                if (archivo) {
+                    submitBtn.innerHTML = 'Subiendo archivo…';
+                    const formData = new FormData();
+                    formData.append('file', archivo);
+                    formData.append('upload_preset', CLOUDINARY_PRESET);
+                    fetch('https://api.cloudinary.com/v1_1/' + CLOUDINARY_CLOUD + '/auto/upload', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(function(res) { return res.json(); })
+                    .then(function(data) {
+                        if (data.secure_url) {
+                            submitBtn.innerHTML = 'Enviando…';
+                            enviarEmail(data.secure_url);
+                        } else {
+                            throw new Error('Sin URL de Cloudinary');
+                        }
+                    })
+                    .catch(function(err) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = 'Enviar consulta <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>';
+                        alert('Error al subir el archivo. Inténtalo de nuevo o envíalo sin adjunto.');
+                        console.error('Cloudinary error:', err);
+                    });
+                } else {
+                    submitBtn.innerHTML = 'Enviando…';
+                    enviarEmail(null);
+                }
             });
         }
     </script>
