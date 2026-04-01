@@ -1130,6 +1130,126 @@
             .footer-bottom { flex-direction: column; text-align: center; }
         }
 
+        /* ═══════════════════════════════════════════
+           PRODUCTS CAROUSEL
+           ═══════════════════════════════════════════ */
+        .products {
+            background: var(--cream-pale);
+            position: relative;
+        }
+        .products::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--cream), transparent);
+        }
+        .section-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            margin-top: 1.8rem;
+        }
+        .section-divider-line {
+            width: 40px; height: 1px;
+            background: var(--gold);
+            opacity: 0.4;
+        }
+        .section-divider-dot {
+            width: 5px; height: 5px;
+            border-radius: 50%;
+            background: var(--gold);
+            opacity: 0.6;
+        }
+        .products-carousel-wrapper {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+        .products-carousel {
+            display: flex;
+            gap: clamp(1.2rem, 2.5vw, 2rem);
+            animation: carouselScroll 25s linear infinite;
+            width: max-content;
+        }
+        .products-carousel:hover { animation-play-state: paused; }
+        @keyframes carouselScroll {
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .product-card {
+            background: var(--white);
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 4px 30px rgba(27,27,58,0.06);
+            transition: transform 0.6s var(--ease-out-expo), box-shadow 0.6s var(--ease-out-expo);
+            min-width: 300px;
+            max-width: 340px;
+            flex-shrink: 0;
+        }
+        .product-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 60px rgba(27,27,58,0.12);
+        }
+        .product-card-img {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4/3;
+            overflow: hidden;
+        }
+        .product-card-img img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s var(--ease-out-expo);
+        }
+        .product-card:hover .product-card-img img { transform: scale(1.06); }
+        .product-card-img::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 40%;
+            background: linear-gradient(to top, rgba(27,27,58,0.08), transparent);
+            pointer-events: none;
+        }
+        .product-card-body {
+            padding: clamp(1.2rem, 2.5vw, 2rem) clamp(1.5rem, 3vw, 2.2rem);
+        }
+        .product-card-name {
+            font-family: var(--font-display);
+            font-size: clamp(1.3rem, 2vw, 1.65rem);
+            font-weight: 500;
+            font-style: italic;
+            color: var(--navy);
+            margin-bottom: 0.7rem;
+        }
+        .product-card-desc {
+            font-family: var(--font-body);
+            font-size: 0.88rem;
+            line-height: 1.7;
+            color: var(--text-muted);
+        }
+        .product-card-accent {
+            display: block;
+            width: 30px; height: 2px;
+            background: var(--gold);
+            margin-top: 1.2rem;
+            transition: width 0.5s var(--ease-out-expo);
+        }
+        .product-card:hover .product-card-accent { width: 60px; }
+        .carousel-hint {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-family: var(--font-body);
+            font-size: 0.72rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gold);
+            opacity: 0.7;
+        }
+
     </style>
 </head>
 <body>
@@ -1167,6 +1287,105 @@
             <a href="pedidos.html" class="hero-cta">Hacer un pedido</a>
         </div>
     </header>
+
+    <!-- ═══════════════ PRODUCTS CAROUSEL ═══════════════ -->
+    <section class="products section-padding" id="tartas">
+        <div class="section-header reveal">
+            <span class="section-label">Repostería artesanal</span>
+            <h2 class="section-title">Nuestras Tartas</h2>
+            <div class="section-divider">
+                <span class="section-divider-line"></span>
+                <span class="section-divider-dot"></span>
+                <span class="section-divider-line"></span>
+            </div>
+        </div>
+        <div class="products-carousel-wrapper">
+            <div class="products-carousel" id="productsCarousel">
+                <div class="product-card">
+                    <div class="product-card-img">
+                        <img src="assets/images/tarta-oreo.png" alt="Tarta de Oreo" loading="lazy">
+                    </div>
+                    <div class="product-card-body">
+                        <h3 class="product-card-name">Tarta de Oreo</h3>
+                        <p class="product-card-desc">Irresistible combinación de crema de queso con galleta Oreo. Textura cremosa y crujiente a partes iguales.</p>
+                        <span class="product-card-accent"></span>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-card-img">
+                        <img src="assets/images/surtido-mini-tartas.png" alt="Surtido de Sabores" loading="lazy">
+                    </div>
+                    <div class="product-card-body">
+                        <h3 class="product-card-name">Surtido de Sabores</h3>
+                        <p class="product-card-desc">Descubre toda nuestra variedad: vasca, chocolate, lotus, oreo y limón. Perfectas para cualquier ocasión.</p>
+                        <span class="product-card-accent"></span>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-card-img">
+                        <img src="assets/images/tarta-pistacho.png" alt="Tarta de Pistacho" loading="lazy">
+                    </div>
+                    <div class="product-card-body">
+                        <h3 class="product-card-name">Tarta de Pistacho</h3>
+                        <p class="product-card-desc">Crema de pistacho artesanal sobre nuestra base de queso. Un capricho irresistible.</p>
+                        <span class="product-card-accent"></span>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-card-img">
+                        <img src="assets/images/mini-tartas.png" alt="Mini Tartas Individuales" loading="lazy">
+                    </div>
+                    <div class="product-card-body">
+                        <h3 class="product-card-name">Mini Tartas Individuales</h3>
+                        <p class="product-card-desc">Perfectas para degustar todos los sabores: Oreo, chocolate, lotus y limón.</p>
+                        <span class="product-card-accent"></span>
+                    </div>
+                </div>
+                <!-- Duplicadas para loop infinito -->
+                <div class="product-card">
+                    <div class="product-card-img">
+                        <img src="assets/images/tarta-oreo.png" alt="Tarta de Oreo" loading="lazy">
+                    </div>
+                    <div class="product-card-body">
+                        <h3 class="product-card-name">Tarta de Oreo</h3>
+                        <p class="product-card-desc">Irresistible combinación de crema de queso con galleta Oreo. Textura cremosa y crujiente a partes iguales.</p>
+                        <span class="product-card-accent"></span>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-card-img">
+                        <img src="assets/images/surtido-mini-tartas.png" alt="Surtido de Sabores" loading="lazy">
+                    </div>
+                    <div class="product-card-body">
+                        <h3 class="product-card-name">Surtido de Sabores</h3>
+                        <p class="product-card-desc">Descubre toda nuestra variedad: vasca, chocolate, lotus, oreo y limón. Perfectas para cualquier ocasión.</p>
+                        <span class="product-card-accent"></span>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-card-img">
+                        <img src="assets/images/tarta-pistacho.png" alt="Tarta de Pistacho" loading="lazy">
+                    </div>
+                    <div class="product-card-body">
+                        <h3 class="product-card-name">Tarta de Pistacho</h3>
+                        <p class="product-card-desc">Crema de pistacho artesanal sobre nuestra base de queso. Un capricho irresistible.</p>
+                        <span class="product-card-accent"></span>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-card-img">
+                        <img src="assets/images/mini-tartas.png" alt="Mini Tartas Individuales" loading="lazy">
+                    </div>
+                    <div class="product-card-body">
+                        <h3 class="product-card-name">Mini Tartas Individuales</h3>
+                        <p class="product-card-desc">Perfectas para degustar todos los sabores: Oreo, chocolate, lotus y limón.</p>
+                        <span class="product-card-accent"></span>
+                    </div>
+                </div>
+            </div>
+            <p class="carousel-hint">Pasa el cursor para pausar</p>
+        </div>
+    </section>
 
     <!-- ═══════════════ INFO DE TIENDA ═══════════════ -->
     <section class="store-info-section section-padding">
