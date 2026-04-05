@@ -561,7 +561,7 @@
 
         .formats-grid {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(6, 1fr);
             gap: clamp(1rem, 2vw, 1.5rem);
             max-width: 1100px;
             margin: 0 auto;
@@ -867,8 +867,8 @@
 
         .flavours-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: clamp(1.2rem, 2.5vw, 2rem);
+            grid-template-columns: repeat(4, 1fr);
+            gap: clamp(1rem, 2vw, 1.5rem);
             max-width: 1100px;
             margin: 0 auto;
         }
@@ -1467,6 +1467,7 @@
         @media (max-width: 900px) {
             .values-grid { grid-template-columns: 1fr 1fr; }
             .formats-grid { grid-template-columns: repeat(3, 1fr); }
+            .flavours-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
         @media (max-width: 768px) {
@@ -1478,6 +1479,45 @@
             .about-image { order: -1; }
             .store-image { order: -1; }
             .cert-visual { order: -1; }
+        }
+
+        /* Tarjeta especial "Elige el tuyo" */
+        .flavour-img-custom {
+            background: var(--navy);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .flavour-custom-inner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            color: var(--gold);
+        }
+        .flavour-custom-inner svg {
+            width: 40px; height: 40px;
+            stroke: var(--gold);
+            opacity: 0.7;
+        }
+        .flavour-custom-inner span {
+            font-family: var(--font-body);
+            font-size: 0.72rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+        .flavour-card-custom {
+            border-style: dashed;
+            border-color: rgba(201, 169, 110, 0.3);
+        }
+        .flavour-card-custom:hover {
+            border-color: rgba(201, 169, 110, 0.6);
+            border-style: solid;
+        }
+
+        @media (max-width: 860px) {
+            .flavours-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
         @media (max-width: 600px) {
@@ -1601,8 +1641,7 @@
                 <line class="c-line c-line-3" x1="545" y1="335" x2="747" y2="260"/>
                 <!-- BR: parte inferior derecha del disco -->
                 <line class="c-line c-line-4" x1="492" y1="378" x2="702" y2="468"/>
-                <!-- BL: parte inferior izquierda del disco -->
-                <line class="c-line c-line-5" x1="368" y1="378" x2="198" y2="468"/>
+
                 <!-- L: lado izquierdo del disco (funciona bien) -->
                 <line class="c-line c-line-6" x1="286" y1="322" x2="153" y2="260"/>
 
@@ -1611,7 +1650,7 @@
                 <line class="c-tick" x1="682" y1="42"  x2="722" y2="42"/>
                 <line class="c-tick" x1="747" y1="245" x2="747" y2="275"/>
                 <line class="c-tick" x1="682" y1="468" x2="722" y2="468"/>
-                <line class="c-tick" x1="178" y1="468" x2="218" y2="468"/>
+
                 <line class="c-tick" x1="153" y1="245" x2="153" y2="275"/>
 
                 <!-- Halos blancos + puntos dorados encima de la tarta -->
@@ -1627,8 +1666,6 @@
                 <circle class="c-halo" cx="492" cy="378" r="9"/>
                 <circle class="c-dot"  cx="492" cy="378" r="4.5"/>
 
-                <circle class="c-halo" cx="368" cy="378" r="9"/>
-                <circle class="c-dot"  cx="368" cy="378" r="4.5"/>
 
                 <circle class="c-halo" cx="286" cy="322" r="9"/>
                 <circle class="c-dot"  cx="286" cy="322" r="4.5"/>
@@ -1653,11 +1690,7 @@
                 </div>
                 <div class="callout-label clab-br">
                     <span class="callout-label-name">100% Natural</span>
-                    <span class="callout-label-sub">Sin aditivos</span>
-                </div>
-                <div class="callout-label clab-bl">
-                    <span class="callout-label-name">0 Conservantes</span>
-                    <span class="callout-label-sub">Ni antioxidantes</span>
+                    <span class="callout-label-sub">Sin conservantes ni aditivos</span>
                 </div>
                 <div class="callout-label clab-l">
                     <span class="callout-label-name">Nata</span>
@@ -1672,104 +1705,93 @@
     <section class="formats-section section-padding">
         <div class="formats-intro reveal">
             <span class="section-label">Catálogo de formatos</span>
-            <h2 class="section-title">Cinco tamaños<br>para cada necesidad</h2>
-            <p>Desde la minitarta individual hasta la tarta familiar de 2,1 kg. El formato perfecto para cada canal de distribución.</p>
+            <h2 class="section-title">Seis tamaños<br>para cada necesidad</h2>
+            <p>Desde la minitarta individual hasta la tarta de 2,5 kg. El formato perfecto para cada canal de distribución.</p>
         </div>
         <div class="formats-grid">
             <div class="format-card reveal reveal-delay-1">
                 <div class="format-illustration">
-                    <!-- Minitarta — vista cenital, tamaño pequeño -->
                     <svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="36" cy="36" r="17" fill="#E8D5A8" opacity="0.25"/>
-                        <circle cx="36" cy="36" r="14" fill="#DEC5A5" opacity="0.4"/>
-                        <circle cx="36" cy="36" r="10" fill="#C9A96E" opacity="0.35"/>
+                        <circle cx="36" cy="36" r="14" fill="#E8D5A8" opacity="0.25"/>
+                        <circle cx="36" cy="36" r="11" fill="#DEC5A5" opacity="0.4"/>
+                        <circle cx="36" cy="36" r="7" fill="#C9A96E" opacity="0.35"/>
+                        <circle cx="36" cy="36" r="3" fill="#B8935A" opacity="0.4"/>
+                        <circle cx="36" cy="36" r="14" stroke="#C9A96E" stroke-width="1" opacity="0.5"/>
+                    </svg>
+                </div>
+                <div class="format-weight">80</div>
+                <div class="format-unit">gramos</div>
+                <div class="format-name">Minitarta</div>
+            </div>
+            <div class="format-card reveal reveal-delay-2">
+                <div class="format-illustration">
+                    <svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="36" cy="36" r="19" fill="#E8D5A8" opacity="0.25"/>
+                        <circle cx="36" cy="36" r="16" fill="#DEC5A5" opacity="0.4"/>
+                        <circle cx="36" cy="36" r="11" fill="#C9A96E" opacity="0.35"/>
                         <circle cx="36" cy="36" r="5" fill="#B8935A" opacity="0.4"/>
-                        <circle cx="36" cy="36" r="17" stroke="#C9A96E" stroke-width="1" opacity="0.5"/>
-                        <circle cx="31" cy="32" r="2" fill="#B8935A" opacity="0.2"/>
-                        <circle cx="40" cy="38" r="1.5" fill="#B8935A" opacity="0.2"/>
+                        <circle cx="36" cy="36" r="19" stroke="#C9A96E" stroke-width="1" opacity="0.5"/>
                     </svg>
                 </div>
                 <div class="format-weight">120</div>
                 <div class="format-unit">gramos</div>
                 <div class="format-name">Minitarta</div>
             </div>
-            <div class="format-card reveal reveal-delay-2">
+            <div class="format-card reveal reveal-delay-3">
                 <div class="format-illustration">
-                    <!-- Tartaleta — ligeramente más grande -->
                     <svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="36" cy="36" r="22" fill="#E8D5A8" opacity="0.22"/>
-                        <circle cx="36" cy="36" r="19" fill="#DEC5A5" opacity="0.38"/>
+                        <circle cx="36" cy="36" r="24" fill="#E8D5A8" opacity="0.22"/>
+                        <circle cx="36" cy="36" r="20" fill="#DEC5A5" opacity="0.38"/>
                         <circle cx="36" cy="36" r="14" fill="#C9A96E" opacity="0.32"/>
                         <circle cx="36" cy="36" r="7" fill="#B8935A" opacity="0.38"/>
-                        <circle cx="36" cy="36" r="22" stroke="#C9A96E" stroke-width="1" opacity="0.5"/>
-                        <circle cx="30" cy="31" r="2.5" fill="#B8935A" opacity="0.18"/>
-                        <circle cx="42" cy="40" r="1.8" fill="#B8935A" opacity="0.18"/>
-                        <circle cx="38" cy="29" r="1.5" fill="#B8935A" opacity="0.15"/>
+                        <circle cx="36" cy="36" r="24" stroke="#C9A96E" stroke-width="1" opacity="0.5"/>
                     </svg>
                 </div>
                 <div class="format-weight">300</div>
                 <div class="format-unit">gramos</div>
-                <div class="format-name">Tartaleta</div>
+                <div class="format-name">Tarta</div>
             </div>
-            <div class="format-card reveal reveal-delay-3">
+            <div class="format-card reveal reveal-delay-4">
                 <div class="format-illustration">
-                    <!-- Tarta 1kg — mediana -->
                     <svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="36" cy="36" r="28" fill="#E8D5A8" opacity="0.2"/>
-                        <circle cx="36" cy="36" r="25" fill="#DEC5A5" opacity="0.36"/>
-                        <circle cx="36" cy="36" r="19" fill="#C9A96E" opacity="0.3"/>
-                        <circle cx="36" cy="36" r="10" fill="#B8935A" opacity="0.35"/>
+                        <circle cx="36" cy="36" r="24" fill="#DEC5A5" opacity="0.36"/>
+                        <circle cx="36" cy="36" r="18" fill="#C9A96E" opacity="0.3"/>
+                        <circle cx="36" cy="36" r="9" fill="#B8935A" opacity="0.35"/>
                         <circle cx="36" cy="36" r="28" stroke="#C9A96E" stroke-width="1.2" opacity="0.5"/>
-                        <circle cx="29" cy="30" r="3" fill="#B8935A" opacity="0.16"/>
-                        <circle cx="44" cy="41" r="2.2" fill="#B8935A" opacity="0.16"/>
-                        <circle cx="40" cy="27" r="1.8" fill="#B8935A" opacity="0.14"/>
-                        <circle cx="28" cy="43" r="1.5" fill="#B8935A" opacity="0.12"/>
                     </svg>
                 </div>
                 <div class="format-weight">1</div>
                 <div class="format-unit">kilogramo</div>
                 <div class="format-name">Tarta</div>
             </div>
-            <div class="format-card reveal reveal-delay-4">
+            <div class="format-card reveal reveal-delay-5">
                 <div class="format-illustration">
-                    <!-- Tarta grande 1,5kg -->
                     <svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="36" cy="36" r="32" fill="#E8D5A8" opacity="0.18"/>
-                        <circle cx="36" cy="36" r="29" fill="#DEC5A5" opacity="0.34"/>
-                        <circle cx="36" cy="36" r="23" fill="#C9A96E" opacity="0.28"/>
-                        <circle cx="36" cy="36" r="13" fill="#B8935A" opacity="0.33"/>
-                        <circle cx="36" cy="36" r="32" stroke="#C9A96E" stroke-width="1.2" opacity="0.5"/>
-                        <circle cx="27" cy="28" r="3.5" fill="#B8935A" opacity="0.15"/>
-                        <circle cx="46" cy="42" r="2.5" fill="#B8935A" opacity="0.15"/>
-                        <circle cx="42" cy="25" r="2" fill="#B8935A" opacity="0.13"/>
-                        <circle cx="26" cy="44" r="2" fill="#B8935A" opacity="0.12"/>
-                        <circle cx="48" cy="30" r="1.5" fill="#B8935A" opacity="0.1"/>
+                        <circle cx="36" cy="36" r="31" fill="#E8D5A8" opacity="0.18"/>
+                        <circle cx="36" cy="36" r="27" fill="#DEC5A5" opacity="0.34"/>
+                        <circle cx="36" cy="36" r="21" fill="#C9A96E" opacity="0.28"/>
+                        <circle cx="36" cy="36" r="11" fill="#B8935A" opacity="0.33"/>
+                        <circle cx="36" cy="36" r="31" stroke="#C9A96E" stroke-width="1.2" opacity="0.5"/>
                     </svg>
                 </div>
                 <div class="format-weight">1,5</div>
                 <div class="format-unit">kilogramos</div>
-                <div class="format-name">Tarta grande</div>
+                <div class="format-name">Tarta</div>
             </div>
             <div class="format-card reveal reveal-delay-5">
                 <div class="format-illustration">
-                    <!-- Tarta familiar 2,1kg — la más grande, casi llena el viewbox -->
                     <svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="36" cy="36" r="34" fill="#E8D5A8" opacity="0.16"/>
-                        <circle cx="36" cy="36" r="31" fill="#DEC5A5" opacity="0.32"/>
-                        <circle cx="36" cy="36" r="25" fill="#C9A96E" opacity="0.26"/>
-                        <circle cx="36" cy="36" r="15" fill="#B8935A" opacity="0.32"/>
+                        <circle cx="36" cy="36" r="30" fill="#DEC5A5" opacity="0.32"/>
+                        <circle cx="36" cy="36" r="24" fill="#C9A96E" opacity="0.26"/>
+                        <circle cx="36" cy="36" r="13" fill="#B8935A" opacity="0.32"/>
                         <circle cx="36" cy="36" r="34" stroke="#C9A96E" stroke-width="1.5" opacity="0.55"/>
-                        <circle cx="25" cy="27" r="4" fill="#B8935A" opacity="0.14"/>
-                        <circle cx="48" cy="44" r="3" fill="#B8935A" opacity="0.14"/>
-                        <circle cx="44" cy="23" r="2.5" fill="#B8935A" opacity="0.12"/>
-                        <circle cx="24" cy="46" r="2.5" fill="#B8935A" opacity="0.11"/>
-                        <circle cx="50" cy="28" r="2" fill="#B8935A" opacity="0.1"/>
-                        <circle cx="22" cy="35" r="1.5" fill="#B8935A" opacity="0.09"/>
                     </svg>
                 </div>
-                <div class="format-weight">2,1</div>
+                <div class="format-weight">2,5</div>
                 <div class="format-unit">kilogramos</div>
-                <div class="format-name">Tarta familiar</div>
+                <div class="format-name">Tarta</div>
             </div>
         </div>
     </section>
@@ -1778,8 +1800,8 @@
     <section class="flavours-section section-padding">
         <div class="flavours-intro reveal">
             <span class="section-label">Variedad de sabores</span>
-            <h2 class="section-title">Seis sabores<br>irresistibles</h2>
-            <p>Nuestra gama de sabores combina la receta clásica con creaciones originales que conquistan a todo tipo de paladares.</p>
+            <h2 class="section-title">Ocho sabores<br>irresistibles</h2>
+            <p>Nuestra gama combina la receta clásica con creaciones originales que conquistan a todo tipo de paladares.</p>
         </div>
         <div class="flavours-grid">
 
@@ -1803,7 +1825,47 @@
                 </div>
             </div>
 
-            <div class="flavour-card reveal reveal-delay-3" style="--flavor-accent: #E8953A;">
+            <div class="flavour-card reveal reveal-delay-3" style="--flavor-accent: #C67C3A;">
+                <div class="flavour-img-wrap">
+                    <img src="assets/images/tarta-sabor-pistacho.png" alt="Tarta de queso sabor Lotus">
+                </div>
+                <div class="flavour-info">
+                    <span class="flavour-name">Lotus</span>
+                    <div class="flavour-dot" style="background: #C67C3A;"></div>
+                </div>
+            </div>
+
+            <div class="flavour-card reveal reveal-delay-1" style="--flavor-accent: #E8E0D0;">
+                <div class="flavour-img-wrap">
+                    <img src="assets/images/tarta-sabor-pistacho.png" alt="Tarta de queso sabor Coco">
+                </div>
+                <div class="flavour-info">
+                    <span class="flavour-name">Coco</span>
+                    <div class="flavour-dot" style="background: #E8E0D0; border: 1px solid #ccc;"></div>
+                </div>
+            </div>
+
+            <div class="flavour-card reveal reveal-delay-2" style="--flavor-accent: #F5C842;">
+                <div class="flavour-img-wrap">
+                    <img src="assets/images/tarta-sabor-pistacho.png" alt="Tarta de queso sabor Maracuyá">
+                </div>
+                <div class="flavour-info">
+                    <span class="flavour-name">Maracuyá</span>
+                    <div class="flavour-dot" style="background: #F5C842;"></div>
+                </div>
+            </div>
+
+            <div class="flavour-card reveal reveal-delay-3" style="--flavor-accent: #3D2314;">
+                <div class="flavour-img-wrap">
+                    <img src="assets/images/tarta-sabor-pistacho.png" alt="Tarta de queso sabor Chocolate Belga">
+                </div>
+                <div class="flavour-info">
+                    <span class="flavour-name">Chocolate Belga</span>
+                    <div class="flavour-dot" style="background: #3D2314;"></div>
+                </div>
+            </div>
+
+            <div class="flavour-card reveal reveal-delay-1" style="--flavor-accent: #E8953A;">
                 <div class="flavour-img-wrap">
                     <img src="assets/images/tarta-sabor-pistacho.png" alt="Tarta de queso sabor Naranja">
                 </div>
@@ -1813,33 +1875,16 @@
                 </div>
             </div>
 
-            <div class="flavour-card reveal reveal-delay-1" style="--flavor-accent: #C4956A;">
-                <div class="flavour-img-wrap">
-                    <img src="assets/images/tarta-sabor-pistacho.png" alt="Tarta de queso sabor Cacahuete">
+            <div class="flavour-card flavour-card-custom reveal reveal-delay-2" style="--flavor-accent: #C9A96E;">
+                <div class="flavour-img-wrap flavour-img-custom">
+                    <div class="flavour-custom-inner">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                        <span>Tu sabor</span>
+                    </div>
                 </div>
                 <div class="flavour-info">
-                    <span class="flavour-name">Cacahuete</span>
-                    <div class="flavour-dot" style="background: #C4956A;"></div>
-                </div>
-            </div>
-
-            <div class="flavour-card reveal reveal-delay-2" style="--flavor-accent: #A8C5A0;">
-                <div class="flavour-img-wrap">
-                    <img src="assets/images/tarta-sabor-pistacho.png" alt="Tarta de queso sabor Coco">
-                </div>
-                <div class="flavour-info">
-                    <span class="flavour-name">Coco</span>
-                    <div class="flavour-dot" style="background: #D4E8D0; border: 1px solid #ccc;"></div>
-                </div>
-            </div>
-
-            <div class="flavour-card reveal reveal-delay-3" style="--flavor-accent: #4A3728;">
-                <div class="flavour-img-wrap">
-                    <img src="assets/images/tarta-sabor-pistacho.png" alt="Tarta de queso sabor Chocolate">
-                </div>
-                <div class="flavour-info">
-                    <span class="flavour-name">Chocolate</span>
-                    <div class="flavour-dot" style="background: #4A3728;"></div>
+                    <span class="flavour-name">Elige el tuyo</span>
+                    <div class="flavour-dot" style="background: linear-gradient(135deg, #C9A96E, #7BA05B, #F5C842, #E8953A); border-radius: 50%;"></div>
                 </div>
             </div>
 
