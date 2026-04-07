@@ -550,7 +550,7 @@
 
         .formats-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: clamp(1rem, 2vw, 1.8rem);
             max-width: 1100px;
             margin: 0 auto;
@@ -583,17 +583,17 @@
         .format-card:hover::before { transform: scaleX(1); }
 
         .format-illustration {
-            width: 72px; height: 72px;
-            margin: 0 auto 1.4rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 100%;
+            aspect-ratio: 4/3;
+            margin: 0 0 1.4rem;
+            overflow: hidden;
+            border-radius: 8px;
         }
         .format-illustration img {
             width: 100%;
             height: 100%;
-            object-fit: contain;
-            border-radius: 4px;
+            object-fit: cover;
+            border-radius: 8px;
             transition: transform 0.5s var(--ease-out-expo);
         }
         .format-card:hover .format-illustration img { transform: scale(1.08); }
@@ -1485,12 +1485,30 @@
             </div>
             <div class="format-card reveal reveal-delay-4">
                 <div class="format-illustration">
-                    <img src="assets/images/surtido-mini-tartas.png" alt="Pack de mini tartas">
+                    <img src="assets/images/pack_2_tartas.png" alt="Pack de 2 mini tartas">
                 </div>
-                <div class="format-size">Pack</div>
-                <div class="format-unit">4 · 6 · 9 unidades</div>
+                <div class="format-size">Pack 2</div>
+                <div class="format-unit">Mini tartas</div>
+                <div class="format-name">Para degustar</div>
+                <p class="format-desc">2 mini tartas de 120 g en los sabores que elijas. Ideal para una merienda o para probar combinaciones.</p>
+            </div>
+            <div class="format-card reveal reveal-delay-5">
+                <div class="format-illustration">
+                    <img src="assets/images/pack_6_tartas.png" alt="Pack de 6 mini tartas">
+                </div>
+                <div class="format-size">Pack 6</div>
+                <div class="format-unit">Mini tartas</div>
+                <div class="format-name">Para compartir</div>
+                <p class="format-desc">6 mini tartas de 120 g en los sabores que elijas. Perfecto para compartir o llevar a una reunión.</p>
+            </div>
+            <div class="format-card reveal reveal-delay-5">
+                <div class="format-illustration">
+                    <img src="assets/images/pack_9_tartas.png" alt="Pack de 9 mini tartas">
+                </div>
+                <div class="format-size">Pack 9</div>
+                <div class="format-unit">Mini tartas</div>
                 <div class="format-name">Para regalar</div>
-                <p class="format-desc">Pack de 4, 6 o 9 mini tartas en los sabores que elijas. Perfecto para regalo o para disfrutar en casa.</p>
+                <p class="format-desc">9 mini tartas de 120 g en los sabores que elijas. El regalo perfecto para cualquier ocasión.</p>
             </div>
         </div>
     </section>
